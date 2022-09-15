@@ -6,12 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HCJPen</title>
-    <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABHNCSVQICAgIfAhkiAAAAdpJREFUaIHlmm1uwzAIhiHaJdp7ZfdIpfYQmZTeI71j2Z9Z8rzYBgOOrL2/2jTBmMfgjxThR0SEt8frDQNoW+cJEQkAYAIAIKLLKM4DANwerzcRXQAAcKTIp9rWecLlvtPZjmg0ne2AVsN34MPL8PPr89f35b67tONCIHU+d81CpgRqTobfLWmYEZBE2JKGmkBprB9FPFyzoqEi0JKo6T1aGk0EtBUm3G9BQ0zAsjxa0GAT8KrrWhosAj0mpVYaRQK9ZtPUvoRGlkBv50ttlWi4rIXSBj1m4KBDApq1TOk+jY3cs6IyWnPuaNgdDQeLTgZVhxAnsWr5ktoInzk2ah1i58By3/84kLvP00YqURKXosJt1MJGrP+1peQkXy2KFjZisQnkKoxk0rGwkerwXKhkoBQdbiWR2Kg9J8qBGlpOzZfaqCl7MqddC/V63q0KxQ16LgSzHZAuAawkHXZFAtoKIRVnLZWKNYS8abQkexA7B7xotEQ9ljiJrWhooh6rqQppaWijHktVRls2K9Z7bbNXTNJhZDU3mE1kEocsJzbTU4naNrDbqYRWR456LSfc3pH1Oggbfks5fge2dR62E9s6TxMi0rbO17OdkWpb5ysiEoYLI/3pI/67zTedx0h7KK4XJQAAAABJRU5ErkJggg==">
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABHNCSVQICAgIfAhkiAAAAdpJREFUaIHlmm1uwzAIhiHaJdp7ZfdIpfYQmZTeI71j2Z9Z8rzYBgOOrL2/2jTBmMfgjxThR0SEt8frDQNoW+cJEQkAYAIAIKLLKM4DANwerzcRXQAAcKTIp9rWecLlvtPZjmg0ne2AVsN34MPL8PPr89f35b67tONCIHU+d81CpgRqTobfLWmYEZBE2JKGmkBprB9FPFyzoqEi0JKo6T1aGk0EtBUm3G9BQ0zAsjxa0GAT8KrrWhosAj0mpVYaRQK9ZtPUvoRGlkBv50ttlWi4rIXSBj1m4KBDApq1TOk+jY3cs6IyWnPuaNgdDQeLTgZVhxAnsWr5ktoInzk2ah1i58By3/84kLvP00YqURKXosJt1MJGrP+1peQkXy2KFjZisQnkKoxk0rGwkerwXKhkoBQdbiWR2Kg9J8qBGlpOzZfaqCl7MqddC/V63q0KxQ16LgSzHZAuAawkHXZFAtoKIRVnLZWKNYS8abQkexA7B7xotEQ9ljiJrWhooh6rqQppaWijHktVRls2K9Z7bbNXTNJhZDU3mE1kEocsJzbTU4naNrDbqYRWR456LSfc3pH1Oggbfks5fge2dR62E9s6TxMi0rbO17OdkWpb5ysiEoYLI/3pI/67zTedx0h7KK4XJQAAAABJRU5ErkJggg==">
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" fileContent-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.0/min/vs/editor/editor.main.min.css">
 
     <style>
-         :root {
+        :root {
             --bg-main: rgb(57, 57, 57);
             --bg-header: rgb(24, 24, 24);
             --bg-subheader: rgb(32, 32, 32);
@@ -24,7 +25,7 @@
             --codeBoxes-width: 500px;
             --codeboxes-height: calc((100vh - var(--header-height) - var(--footer-height)) / 3);
         }
-        
+
         body {
             margin: 0;
             display: flex;
@@ -37,7 +38,7 @@
             font-size: 15px;
             font-weight: 400;
         }
-        
+
         header {
             flex-shrink: 0;
             height: var(--header-height);
@@ -46,7 +47,7 @@
             justify-content: center;
             background: var(--bg-header);
         }
-        
+
         footer {
             flex-shrink: 0;
             height: var(--footer-height);
@@ -55,20 +56,25 @@
             justify-content: end;
             background: var(--bg-header);
         }
-        
+
         main {
             flex-grow: 1;
             display: flex;
             flex-wrap: nowrap;
         }
-        
+
         .divider {
             width: 10px;
             height: calc(100vh - var(--bg-header) - var(--footer-height));
             background: var(--bg-header);
             cursor: pointer;
         }
-        
+
+        .resultBox {
+            flex-shrink: 1;
+            width: 100%;
+        }
+
         .codeBoxes {
             width: var(--codeBoxes-width);
             border-right: 1px solid var(--bg-header);
@@ -76,7 +82,7 @@
             display: flex;
             flex-direction: column;
         }
-        
+
         .codeBox {
             max-height: var(--codeboxes-height);
             height: var(--codeboxes-height);
@@ -84,29 +90,29 @@
             overflow: hidden;
             min-height: 1.5rem;
         }
-        
+
         .codeBox .header {
             height: 1.5rem;
             background: var(--bg-subheader);
             padding-left: 1rem;
             cursor: row-resize;
         }
-        
+
         .codeBox .editor {
             color: var(--text-color);
             overflow: scroll;
             height: 100%;
         }
-        
+
         .HTMLbox {
             color: var(--HTML-color);
         }
-        
+
         .CSSbox {
             color: var(--CSS-color);
             flex-grow: 1;
         }
-        
+
         .JSbox {
             color: var(--JS-color);
             flex-grow: 1;
@@ -143,7 +149,7 @@
         <!-- RIGHT SIDE -->
         <div class="divider">&nbsp;</div>
         <div class="resultBox">
-            <!-- <iframe src="" frameborder="0"></iframe> -->
+            <iframe src="" frameborder="0"></iframe>
         </div>
 
 
@@ -152,62 +158,77 @@
     <footer>
         <div class="withLove">
             <a href="https://github.com/KoljaL/HCJPen" title="Link to Github Repository" target="_blank">
-        Made with
-        <svg viewBox="0 0 1792 1792" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-          <path fill="#8E1B1B" d="M896 1664q-26 0-44-18l-624-602q-10-8-27.5-26T145 952.5 77 855 23.5 734 0 596q0-220 127-344t351-124q62 0 126.5 21.5t120 58T820 276t76 68q36-36 76-68t95.5-68.5 120-58T1314 128q224 0 351 124t127 344q0 221-229 450l-623 600q-18 18-44 18z"></path>
-        </svg>
-        by
-        <img src="https://rasal.de/img/HCJP-15.png" alt="HCJP" width="15px">
-      </a>
+                Made with
+                <svg viewBox="0 0 1792 1792" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#8E1B1B" d="M896 1664q-26 0-44-18l-624-602q-10-8-27.5-26T145 952.5 77 855 23.5 734 0 596q0-220 127-344t351-124q62 0 126.5 21.5t120 58T820 276t76 68q36-36 76-68t95.5-68.5 120-58T1314 128q224 0 351 124t127 344q0 221-229 450l-623 600q-18 18-44 18z"></path>
+                </svg>
+                by
+                <img src="https://rasal.de/img/HCJP-15.png" alt="HCJP" width="15px">
+            </a>
         </div>
     </footer>
 </body>
 <script src="./main.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.0/min/vs/loader.min.js"></script>
 <script>
-    var editor;
-    let fileContent = '';
-    // loadEditor(select(".CSSbox .editor"), fileContent);
-    // loadEditor(select(".JSbox .editor"), fileContent);
+    // https://dev.to/pulljosh/how-to-load-html-css-and-js-code-into-an-iframe-2blc
+    var editor = {};
+    var html, css, js;
+    var iframe = select('.resultBox iframe');
+
     loadFileContent('default')
 
-    function loadFileContent(file) {
-        // HTML
-        fetch(`./code/${file}/${file}.html`)
-            .then((response) => response.text())
-            .then((HTML) => {
-                // console.log(HTML);
-                loadEditor(select(".HTMLbox .editor"), HTML, 'html');
 
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
 
-        // CSS
-        fetch(`./code/${file}/${file}.css`)
-            .then((response) => response.text())
-            .then((CSS) => {
-                // console.log(CSS);
-                loadEditor(select(".CSSbox .editor"), CSS, 'css');
 
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-        // JS
-        fetch(`./code/${file}/${file}.js`)
-            .then((response) => response.text())
-            .then((JS) => {
-                // console.log(JS);
-                loadEditor(select(".JSbox .editor"), JS, 'js');
 
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+    /**
+     * 
+     * create iframe and load all content to it
+     * 
+     */
+    function createIframe(data) {
+        iframe.setAttribute("style", "height:100%;width:100%;border:none;");
+        let html_string = `
+            <!DOCTYPE html>
+            <head>
+                <style>${data[1]}</style>
+            </head>
+            ${data[0]}
+            <script>${data[2]}<\/script>`;
+        iframe.src = "data:text/html;charset=utf-8," + escape(html_string);
     }
 
+
+
+
+    /**
+     * 
+     * load three file contents & load it to the editor
+     * 
+     */
+    function loadFileContent(file) {
+        html = fetch(`./code/${file}/${file}.html`).then((res) => res.text());
+        css = fetch(`./code/${file}/${file}.css`).then((res) => res.text());
+        js = fetch(`./code/${file}/${file}.js`).then((res) => res.text());
+
+        Promise.all([html, css, js]).then((res) => {
+            // console.log(res);
+            loadEditor(select(".HTMLbox .editor"), res[0], 'html');
+            loadEditor(select(".CSSbox .editor"), res[1], 'css');
+            loadEditor(select(".JSbox .editor"), res[2], 'js');
+            return res
+        })
+            .then((data) => createIframe(data));
+    }
+
+
+
+    /**
+     * 
+     * load monaco editor
+     * 
+     */
     function loadEditor(element, fileContent, lang) {
         require.config({
             paths: {
@@ -215,13 +236,15 @@
             }
         });
         require(["vs/editor/editor.main"], () => {
-            editor = monaco.editor.create(element, {
+            editor[lang] = monaco.editor.create(element, {
                 value: fileContent,
                 language: lang,
                 lineNumbers: "on",
                 roundedSelection: true,
                 scrollBeyondLastLine: true,
                 readOnly: false,
+                formatOnPaste: true,
+                formatOnType: true,
                 minimap: {
                     enabled: false
                 },
@@ -240,6 +263,12 @@
             // deb(select(".CSSbox .editor"))
         });
     }
+
+    setTimeout(() => {
+        deb(editor['html'].getValue())
+        deb(editor['css'].getValue())
+        deb(editor['js'].getValue())
+    }, 1000);
 </script>
 
 </html>
