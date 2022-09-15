@@ -10,57 +10,18 @@ const selectAll = document.querySelectorAll.bind(document);
 // add resize function
 //
 document.addEventListener('DOMContentLoaded', function() {
-    // const resizer = select('.divider');
-    // const prevEl = resizer.previousElementSibling;
-    // const nextEl = resizer.nextElementSibling;
-    // let x = 0;
-    // let y = 0;
-    // let NextMaxWidth = 0;
-    // let PrevMaxWidth = 0;
-    // const mouseDownHandler = function(e) {
-    //     x = e.clientX;
-    //     PrevWidth = prevEl.getBoundingClientRect().width;
-    //     PrevMaxWidth = prevEl.getBoundingClientRect().width;
-    //     NextMaxWidth = nextEl.getBoundingClientRect().width;
-    //     document.addEventListener('mousemove', mouseMoveHandler);
-    //     document.addEventListener('mouseup', mouseUpHandler);
-    // };
-    // const mouseMoveHandler = function(e) {
-    //     const dx = e.clientX - x;
-    //     const newPrevMaxWidth = PrevMaxWidth + dx;
-    //     const newNextMaxWidth = NextMaxWidth - dx;
-    //     const newPrevWidth = ((PrevWidth + dx) * 100) / resizer.parentNode.getBoundingClientRect().width;
-    //     prevEl.style.width = `${newPrevWidth}%`;
-    //     prevEl.style.maxWidth = `${newPrevMaxWidth}px`;
-    //     nextEl.style.maxWidth = `${newNextMaxWidth}px`;
-    //     resizer.style.cursor = 'col-resize';
-    //     document.body.style.cursor = 'col-resize';
-    //     prevEl.style.userSelect = 'none';
-    //     prevEl.style.pointerEvents = 'none';
-    //     nextEl.style.userSelect = 'none';
-    //     nextEl.style.pointerEvents = 'none';
-    // };
-    // const mouseUpHandler = function() {
-    //     resizer.style.removeProperty('cursor');
-    //     document.body.style.removeProperty('cursor');
-    //     prevEl.style.removeProperty('user-select');
-    //     prevEl.style.removeProperty('pointer-events');
-    //     nextEl.style.removeProperty('user-select');
-    //     nextEl.style.removeProperty('pointer-events');
-    //     document.removeEventListener('mousemove', mouseMoveHandler);
-    //     document.removeEventListener('mouseup', mouseUpHandler);
-    // };
-    // resizer.addEventListener('mousedown', mouseDownHandler);
-
-
     resize(select('.divider'), select('.codeBoxes'), select('.resultBox'), direction = 'horizontal');
-
     resize(select('.CSSbox .header'), select('.HTMLbox'), select('.CSSbox'), direction = 'vertical');
     resize(select('.JSbox .header'), select('.CSSbox'), select('.JSbox'), direction = 'vertical');
-
-
 });
 
+
+
+/**
+ * 
+ * resize elements 
+ * 
+ */
 function resize(resizer, prevEl, nextEl, direction = 'horizontal') {
     let x = 0;
     let y = 0;
@@ -71,18 +32,20 @@ function resize(resizer, prevEl, nextEl, direction = 'horizontal') {
 
 
     const mouseDownHandler = function(e) {
-        deb('resizer', resizer)
-        deb('direction', direction)
-        deb('prevEl', prevEl)
-        deb('nextEl', nextEl)
-        deb(' ')
+        // deb('resizer', resizer)
+        // deb('direction', direction)
+        // deb('prevEl', prevEl)
+        // deb('nextEl', nextEl)
+        // deb(' ')
 
         if (direction === 'horizontal') {
             x = e.clientX;
             PrevWidth = prevEl.getBoundingClientRect().width;
             PrevMaxWidth = prevEl.getBoundingClientRect().width;
             NextMaxWidth = nextEl.getBoundingClientRect().width;
-        } else {
+        } 
+        // vertically
+        else {
             y = e.clientY;
             PrevHeight = prevEl.getBoundingClientRect().height;
             PrevMaxHeight = prevEl.getBoundingClientRect().height;
@@ -105,7 +68,7 @@ function resize(resizer, prevEl, nextEl, direction = 'horizontal') {
             prevEl.style.width = `${newPrevWidth}%`;
             prevEl.style.maxWidth = `${newPrevMaxWidth}px`;
             nextEl.style.maxWidth = `${newNextMaxWidth}px`;
-
+            // STYLE
             resizer.style.cursor = 'col-resize';
             document.body.style.cursor = 'col-resize';
         }
@@ -122,9 +85,7 @@ function resize(resizer, prevEl, nextEl, direction = 'horizontal') {
             resizer.style.cursor = 'row-resize';
             document.body.style.cursor = 'row-resize';
         }
-
-
-
+        // STYLE
         prevEl.style.userSelect = 'none';
         prevEl.style.pointerEvents = 'none';
         nextEl.style.userSelect = 'none';
@@ -134,14 +95,15 @@ function resize(resizer, prevEl, nextEl, direction = 'horizontal') {
 
 
     const mouseUpHandler = function() {
+        document.removeEventListener('mousemove', mouseMoveHandler);
+        document.removeEventListener('mouseup', mouseUpHandler);
+        // STYLE
         resizer.style.removeProperty('cursor');
         document.body.style.removeProperty('cursor');
         prevEl.style.removeProperty('user-select');
         prevEl.style.removeProperty('pointer-events');
         nextEl.style.removeProperty('user-select');
         nextEl.style.removeProperty('pointer-events');
-        document.removeEventListener('mousemove', mouseMoveHandler);
-        document.removeEventListener('mouseup', mouseUpHandler);
     };
     resizer.addEventListener('mousedown', mouseDownHandler);
 }

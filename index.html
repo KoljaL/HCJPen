@@ -44,7 +44,7 @@
             height: var(--header-height);
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             background: var(--bg-header);
         }
 
@@ -117,33 +117,60 @@
             color: var(--JS-color);
             flex-grow: 1;
         }
+
+        .menu {
+            padding-left: 1rem;
+        }
     </style>
 </head>
 
 <body>
     <header>
+        <div class="menu">
+            <button>run</button>
+        </div>
+
         <h1><span style="color: var(--HTML-color)">H</span><span style="color: var(--CSS-color)">C</span><span style="color: var(--JS-color)">J</span>-Pen</h1>
+        <div>&nbsp;</div>
     </header>
     <main>
 
 
         <!-- LEFT SIDE -->
         <div class="codeBoxes">
+            <!-- HTML -->
             <div class="HTMLbox codeBox">
-                <div class="header">HTML</div>
+                <div class="header">HTML
+                    <label class="cbWrapper">
+                        <input id="cbhtml" type="checkbox" checked="checked" style="display: none;">
+                        <label for="cbhtml" title="instant reload"></label>
+                    </label>
+                </div>
                 <div class="editor"> </div>
-
             </div>
+
+            <!-- CSS -->
             <div class="CSSbox codeBox">
-                <div class="header">CSS</div>
+                <div class="header">CSS
+                    <label class="cbWrapper">
+                        <input id="cbcss" type="checkbox" checked="checked" style="display: none;">
+                        <label for="cbcss" title="instant reload"></label>
+                    </label>
+                </div>
                 <div class="editor"></div>
-
             </div>
+
+            <!-- JS -->
             <div class="JSbox codeBox">
-                <div class="header">JS</div>
+                <div class="header">JS
+                    <label class="cbWrapper">
+                        <input id="cbjs" type="checkbox" style="display: none;">
+                        <label for="cbjs" title="instant reload"></label>
+                    </label>
+                </div>
                 <div class="editor"> </div>
-
             </div>
+
         </div>
 
         <!-- RIGHT SIDE -->
@@ -173,11 +200,48 @@
 <script>
     // https://dev.to/pulljosh/how-to-load-html-css-and-js-code-into-an-iframe-2blc
     var editor = {};
+    var data = {};
     var html, css, js;
     var iframe = select('.resultBox iframe');
+    const runButton = select('header .menu button');
 
     loadFileContent('default')
 
+
+
+    runButton.addEventListener('click', () => {
+        createIframe(data);
+    })
+
+    /**
+     * 
+     * detect changes in editors and reload teh iframe (if checkbox)
+     * 
+     */
+    function reloadIframeOnChange() {
+        editor['html'].getModel().onDidChangeContent((event) => {
+            runButton.classList.add('change');
+            if (select('#cbhtml').checked) {
+                createIframe(data)
+            };
+        })
+
+
+        editor['css'].getModel().onDidChangeContent((event) => {
+            runButton.classList.add('change');
+            if (select('#cbcss').checked) {
+                createIframe(data)
+            }
+        });
+
+
+        editor['javascript'].getModel().onDidChangeContent((event) => {
+            runButton.classList.add('change');
+            if (select('#cbjs').checked) {
+                createIframe(data)
+            }
+        });
+    }
 
 
 
@@ -188,6 +252,9 @@
      * 
      */
     function createIframe(data) {
+        data[0] = editor['html'].getValue();
+        data[1] = editor['css'].getValue();
+        data[2] = editor['javascript'].getValue();
         iframe.setAttribute("style", "height:100%;width:100%;border:none;");
         let html_string = `
             <!DOCTYPE html>
@@ -197,6 +264,8 @@
             ${data[0]}
             <script>${data[2]}<\/script>`;
         iframe.src = "data:text/html;charset=utf-8," + escape(html_string);
+        runButton.classList.remove('change');
+
     }
 
 
@@ -212,14 +281,19 @@
         css = fetch(`./code/${file}/${file}.css`).then((res) => res.text());
         js = fetch(`./code/${file}/${file}.js`).then((res) => res.text());
 
-        Promise.all([html, css, js]).then((res) => {
+        Promise.all([html, css, js]).then((data) => {
             // console.log(res);
-            loadEditor(select(".HTMLbox .editor"), res[0], 'html');
-            loadEditor(select(".CSSbox .editor"), res[1], 'css');
-            loadEditor(select(".JSbox .editor"), res[2], 'js');
-            return res
+            loadEditor(select(".HTMLbox .editor"), data[0], 'html');
+            loadEditor(select(".CSSbox .editor"), data[1], 'css');
+            loadEditor(select(".JSbox .editor"), data[2], 'javascript');
+            return data
         })
-            .then((data) => createIframe(data));
+            .then((data) =>
+                setTimeout(() => {
+                    createIframe(data);
+                    reloadIframeOnChange();
+                }, 1000));
+
     }
 
 
@@ -264,11 +338,6 @@
         });
     }
 
-    setTimeout(() => {
-        deb(editor['html'].getValue())
-        deb(editor['css'].getValue())
-        deb(editor['js'].getValue())
-    }, 1000);
 </script>
 
 </html>
