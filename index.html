@@ -8,10 +8,13 @@
     <title>HCJPen</title>
     <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABHNCSVQICAgIfAhkiAAAAdpJREFUaIHlmm1uwzAIhiHaJdp7ZfdIpfYQmZTeI71j2Z9Z8rzYBgOOrL2/2jTBmMfgjxThR0SEt8frDQNoW+cJEQkAYAIAIKLLKM4DANwerzcRXQAAcKTIp9rWecLlvtPZjmg0ne2AVsN34MPL8PPr89f35b67tONCIHU+d81CpgRqTobfLWmYEZBE2JKGmkBprB9FPFyzoqEi0JKo6T1aGk0EtBUm3G9BQ0zAsjxa0GAT8KrrWhosAj0mpVYaRQK9ZtPUvoRGlkBv50ttlWi4rIXSBj1m4KBDApq1TOk+jY3cs6IyWnPuaNgdDQeLTgZVhxAnsWr5ktoInzk2ah1i58By3/84kLvP00YqURKXosJt1MJGrP+1peQkXy2KFjZisQnkKoxk0rGwkerwXKhkoBQdbiWR2Kg9J8qBGlpOzZfaqCl7MqddC/V63q0KxQ16LgSzHZAuAawkHXZFAtoKIRVnLZWKNYS8abQkexA7B7xotEQ9ljiJrWhooh6rqQppaWijHktVRls2K9Z7bbNXTNJhZDU3mE1kEocsJzbTU4naNrDbqYRWR456LSfc3pH1Oggbfks5fge2dR62E9s6TxMi0rbO17OdkWpb5ysiEoYLI/3pI/67zTedx0h7KK4XJQAAAABJRU5ErkJggg==">
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" fileContent-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.0/min/vs/editor/editor.main.min.css">
+
     <style>
          :root {
             --bg-main: rgb(57, 57, 57);
             --bg-header: rgb(24, 24, 24);
+            --bg-subheader: rgb(32, 32, 32);
             --text-color: #ccc;
             --HTML-color: #F14A29;
             --CSS-color: #264de4;
@@ -84,13 +87,12 @@
         
         .codeBox .header {
             height: 1.5rem;
-            background: var(--bg-header);
+            background: var(--bg-subheader);
             padding-left: 1rem;
             cursor: row-resize;
         }
         
         .codeBox .editor {
-            padding: 1rem;
             color: var(--text-color);
             overflow: scroll;
             height: 100%;
@@ -123,26 +125,17 @@
         <div class="codeBoxes">
             <div class="HTMLbox codeBox">
                 <div class="header">HTML</div>
-                <div class="editor">
-                    Note: The matching is done using depth-first pre-order traversal of the document's nodes starting with the first element in the document's markup and iterating through sequential nodes by order of the number of child nodes. Note: The matching is done
-                    using depth-first pre-order traversal of the document's nodes starting with the first element in the document's markup and iterating through sequential nodes by order of the number of child nodes.
-                </div>
+                <div class="editor"> </div>
 
             </div>
             <div class="CSSbox codeBox">
                 <div class="header">CSS</div>
-                <div class="editor">
-                    Note: The matching is done using depth-first pre-order traversal of the document's nodes starting with the first element in the document's markup and iterating through sequential nodes by order of the number of child nodes. Note: The matching is done
-                    using depth-first pre-order traversal of the document's nodes starting with the first element in the document's markup and iterating through sequential nodes by order of the number of child nodes.
-                </div>
+                <div class="editor"></div>
 
             </div>
             <div class="JSbox codeBox">
                 <div class="header">JS</div>
-                <div class="editor">
-                    Note: The matching is done using depth-first pre-order traversal of the document's nodes starting with the first element in the document's markup and iterating through sequential nodes by order of the number of child nodes. Note: The matching is done
-                    using depth-first pre-order traversal of the document's nodes starting with the first element in the document's markup and iterating through sequential nodes by order of the number of child nodes.
-                </div>
+                <div class="editor"> </div>
 
             </div>
         </div>
@@ -150,7 +143,7 @@
         <!-- RIGHT SIDE -->
         <div class="divider">&nbsp;</div>
         <div class="resultBox">
-            Note: The matching is done using depth-first pre-order traversal of the document's nodes starting with the first element in the document's markup and iterating through sequential nodes by order of the number of child nodes.
+            <!-- <iframe src="" frameborder="0"></iframe> -->
         </div>
 
 
@@ -170,7 +163,83 @@
     </footer>
 </body>
 <script src="./main.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.0/min/vs/loader.min.js"></script>
 <script>
+    var editor;
+    let fileContent = '';
+    // loadEditor(select(".CSSbox .editor"), fileContent);
+    // loadEditor(select(".JSbox .editor"), fileContent);
+    loadFileContent('default')
+
+    function loadFileContent(file) {
+        // HTML
+        fetch(`./code/${file}/${file}.html`)
+            .then((response) => response.text())
+            .then((HTML) => {
+                // console.log(HTML);
+                loadEditor(select(".HTMLbox .editor"), HTML, 'html');
+
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+        // CSS
+        fetch(`./code/${file}/${file}.css`)
+            .then((response) => response.text())
+            .then((CSS) => {
+                // console.log(CSS);
+                loadEditor(select(".CSSbox .editor"), CSS, 'css');
+
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        // JS
+        fetch(`./code/${file}/${file}.js`)
+            .then((response) => response.text())
+            .then((JS) => {
+                // console.log(JS);
+                loadEditor(select(".JSbox .editor"), JS, 'js');
+
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+
+    function loadEditor(element, fileContent, lang) {
+        require.config({
+            paths: {
+                'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.0/min/vs'
+            }
+        });
+        require(["vs/editor/editor.main"], () => {
+            editor = monaco.editor.create(element, {
+                value: fileContent,
+                language: lang,
+                lineNumbers: "on",
+                roundedSelection: true,
+                scrollBeyondLastLine: true,
+                readOnly: false,
+                minimap: {
+                    enabled: false
+                },
+                automaticLayout: true,
+                contextmenu: true,
+                fontSize: 14,
+                scrollbar: {
+                    useShadows: false,
+                    vertical: "hidden",
+                    horizontal: "visible",
+                    horizontalScrollbarSize: 12,
+                    verticalScrollbarSize: 0
+                },
+                theme: 'vs-dark',
+            });
+            // deb(select(".CSSbox .editor"))
+        });
+    }
 </script>
 
 </html>
