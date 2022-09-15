@@ -1,0 +1,33 @@
+/* scrollbar */
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+* {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    box-sizing: border-box;
+}
+
+footer .withLove {
+    position: relative;
+    right: 1rem;
+}
+
+footer .withLove a {
+    text-decoration: none;
+    font-size: .8rem;
+    color: var(--text-color)
+}
+
+footer .withLove img {
+    position: relative;
+    top: 2px;
+}
+
+footer .withLove svg {
+    height: 0.7rem;
+    position: relative;
+    top: 2px;
+}
