@@ -105,6 +105,9 @@ function resize(resizer, prevEl, nextEl, direction = 'horizontal') {
             prevEl.style.width = `${newPrevWidth}%`;
             prevEl.style.maxWidth = `${newPrevMaxWidth}px`;
             nextEl.style.maxWidth = `${newNextMaxWidth}px`;
+
+            resizer.style.cursor = 'col-resize';
+            document.body.style.cursor = 'col-resize';
         }
         // vertically
         else {
@@ -115,11 +118,13 @@ function resize(resizer, prevEl, nextEl, direction = 'horizontal') {
             prevEl.style.height = `${newPrevHeight}%`;
             prevEl.style.maxHeight = `${newPrevMaxHeight}px`;
             nextEl.style.maxHeight = `${newNextMaxHeight}px`;
+
+            resizer.style.cursor = 'row-resize';
+            document.body.style.cursor = 'row-resize';
         }
 
 
-        resizer.style.cursor = 'col-resize';
-        document.body.style.cursor = 'col-resize';
+
         prevEl.style.userSelect = 'none';
         prevEl.style.pointerEvents = 'none';
         nextEl.style.userSelect = 'none';

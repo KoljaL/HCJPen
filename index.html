@@ -74,18 +74,19 @@
             flex-direction: column;
         }
         
-        .codeBoxes>div {
-            height: var(--codeboxes-height);
-        }
-        
         .codeBox {
+            max-height: var(--codeboxes-height);
+            height: var(--codeboxes-height);
             /* overflow: scroll; */
             overflow: hidden;
+            min-height: 1.5rem;
         }
         
         .codeBox .header {
+            height: 1.5rem;
             background: var(--bg-header);
             padding-left: 1rem;
+            cursor: row-resize;
         }
         
         .codeBox .editor {
