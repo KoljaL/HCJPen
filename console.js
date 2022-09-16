@@ -34,31 +34,27 @@
   div.className = "as-console";
   if (document.getElementById('console')){
     document.getElementById('console').appendChild(wrapper).appendChild(div);
-    console.log('got it')
   }else{
+    // return;
     document.body.appendChild(wrapper).appendChild(div);
   }
 
   style.type = "text/css";
   style.textContent = [
-      ".as-console-wrapper { position: fixed; bottom: 0; left: 0; right: 0; max-height: 150px; overflow-y: scroll; overflow-x: hidden; border-top: 1px solid #000; display: none; background: #fff; }",
-      ".as-console-wrapper.as-console-maximized { top: 0px; max-height: inherit; display:block; background: #fff; border-top: none;  }",
-      ".as-console { border: 1px solid #f0f0f0; display: table; width: 100%; border-collapse: collapse; }",
+      ".as-console-wrapper { position: fixed; bottom: 0; left: 0; right: 0; max-height: 250px; overflow-y: scroll; overflow-x: hidden; border-top: 1px solid #000; display: none; color: #ccc; background: rgb(57, 57, 57); }",
+      ".as-console-wrapper.as-console-maximized { top: 0px; max-height: inherit; display:block; background: rgb(57, 57, 57); border-top: none;  }",
+      ".as-console { border: none; display: table; width: 100%; border-collapse: collapse; }",
       ".as-console-row { display: table-row; font-family: monospace; font-size: 10pt; }",
-      ".as-console-timestamps .as-console-row:after { display: table-cell; padding: 3px 6px; color: rgba(0,0,0,.35); border: 1px solid #f0f0f0; content: attr(data-date); vertical-align: top; }",
-      ".as-console-row + .as-console-row > * { border: 1px solid #f0f0f0; }",
+      ".as-console-timestamps .as-console-row:after { display: table-cell; display:none; padding: 3px 6px; color: rgba(0,0,0,.35); border: none; content: attr(data-date); vertical-align: top; }",
+      ".as-console-row + .as-console-row > * { border: none; }",
       ".as-console-row-code { width: 100%; white-space: pre-wrap; padding: 3px 5px; display: table-cell; font-family: monospace; font-size: 13px; vertical-align: middle; }",
       ".as-console-error:before { content: 'Error: '; color: #f00; }",
       ".as-console-assert:before { content: 'Assertion failed: '; color: #f00; }",
-      ".as-console-info:before { content: 'Info: '; color: #00f; }",
-      ".as-console-warning:before { content: 'Warning: '; color: #e90 }",
-      "@-webkit-keyframes as-console-flash { 0% { background: rgba(255,240,0,.25); } 100% { background: none; } }",
-      "@-moz-keyframes as-console-flash { 0% { background: rgba(255,240,0,.25); } 100% { background: none; } }",
-      "@-ms-keyframes as-console-flash { 0% { background: rgba(255,240,0,.25); } 100% { background: none; } }",
-      "@keyframes as-console-flash { 0% { background: rgba(255,240,0,.25); } 100% { background: none; } }",
+      ".as-console-info:before { content: 'Info: '; color: #6363EA; }",
+      ".as-console-warning:before { content: 'Warning: '; color: #e90 }", 
       ".as-console-row-code, .as-console-row:after { -webkit-animation: as-console-flash 1s; -moz-animation: as-console-flash 1s; -ms-animation: as-console-flash 1s; animation: as-console-flash 1s; }",
-      ".as-console-dictionary { margin: 0; padding: 0 0 0 20px; background-color: #fff; list-style: none; white-space: normal; }",
-      ".as-console-dictionary-label { color: #831393; }",
+      ".as-console-dictionary { margin: 0; padding: 0 0 0 20px; background-color: rgb(57, 57, 57); list-style: none; white-space: normal; }",
+      ".as-console-dictionary-label { color: #8f4b99; }",
       ".as-console-dictionary-label::after { content: ':'; margin-right: 6px; font-style: normal;}",
       ".as-console-expandable-value { cursor: default; white-space: nowrap; }",
       ".as-console-expandable-value::before { content: ''; display: inline-block; margin: 0 4px 0 0; width: 8.316px; height: 7.2px; background-size: 100%; background-repeat: no-repeat; background-position: center center; background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMTMuODU2cHgiIGhlaWdodD0iMTJweCIgdmlld0JveD0iMCAwIDEzLjg1NiAxMiIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMTMuODU2IDEyIj48cG9seWdvbiBmaWxsPSIjQ0NDQ0NDIiBwb2ludHM9IjEzLjg1NiwwIDYuOTI4LDEyIDAsMCAiLz48L3N2Zz4='); }",
@@ -67,12 +63,12 @@
       ".as-console-ellipsis { display: none; }",
       ".as-console-collapsed-value .as-console-ellipsis { display: inline; }",
       ".as-console-type-label, .as-console-nil-value { color: #808080; }",
-      ".as-console-literal-value, .as-console-expandable-value .as-console-string-value { color: #C00; }",
+      ".as-console-literal-value, .as-console-expandable-value .as-console-string-value { color: #BB4A4A; }",
       ".as-console-expandable-value .as-console-string-value::before, .as-console-expandable-value .as-console-string-value::after { content: '\"'; color: #000; }",
-      ".as-console-keyword { color: #00F; }",
+      ".as-console-keyword { color: #6363EA; }",
       ".as-console-non-enumerable-value > .as-console-dictionary-label { color: #b571be; }",
       ".as-console-function-preview { font-style: italic; }",
-      ".as-console-table { width: 100%; table-layout: fixed; border-collapse: collapse; background-color: #fff; border: 1px solid #aaa; }",
+      ".as-console-table { width: 100%; table-layout: fixed; border-collapse: collapse; background-color: rgb(57, 57, 57); border: 1px solid #aaa; }",
       ".as-console-table thead { background-color: #f3f3f3; border-bottom: 1px solid #aaa; }",
       ".as-console-table th { font-weight: normal; text-align: left; }",
       ".as-console-table th, .as-console-table td { padding: 3px 6px; border-style: solid; border-width: 0 1px; border-color: #aaa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }",
@@ -436,7 +432,7 @@
       let row = document.createElement("div");
       row.className = "as-console-row";
 
-      row.setAttribute("data-date", formatDate(new Date()).slice(11));
+      // row.setAttribute("data-date", formatDate(new Date()).slice(11));
 
       let code = row.appendChild(document.createElement("code"));
       code.className = "as-console-row-code";
@@ -668,7 +664,7 @@
       let row = document.createElement("div");
       row.className = "as-console-row";
 
-      row.setAttribute("data-date", formatDate(new Date()).slice(11));
+      // row.setAttribute("data-date", formatDate(new Date()).slice(11));
 
       let code = row.appendChild(document.createElement("code"));
       code.className = "as-console-row-code";

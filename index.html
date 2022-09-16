@@ -134,7 +134,8 @@
 <body>
     <header>
         <div class="menu">
-            <button>run</button>
+            <button class="run">run</button>
+            <button class="download">download</button>
         </div>
 
         <h1><span style="color: var(--HTML-color)">H</span><span style="color: var(--CSS-color)">C</span><span style="color: var(--JS-color)">J</span>-Pen</h1>
@@ -183,7 +184,7 @@
         <!-- RIGHT SIDE -->
         <div class="divider">&nbsp;</div>
         <div class="resultBox">
-            <iframe src="" frameborder="0"></iframe>
+            <iframe id=resultIframe src="" frameborder="0"></iframe>
         </div>
 
 
@@ -203,7 +204,6 @@
     </footer>
 </body>
 <script src="./main.js"></script>
-<script src="./console.js"></script>
 <script>var require = {paths: {'vs': 'assets/vs'}};</script>
 <script src="assets/vs/loader.js"></script>
 <script src="assets/vs/editor/editor.main.nls.js"></script>
@@ -215,9 +215,11 @@
     var data = {};
     var html, css, js;
     var iframe = select('.resultBox iframe');
-    const runButton = select('header .menu button');
-
-    loadFileContent('default')
+    const runButton = select('header .run');
+    const downloadButton = select('header .download');
+    window.onload = function () {
+        loadFileContent('default')
+    };
 
 
 
@@ -227,6 +229,26 @@
      * 
      */
     runButton.addEventListener('click', () => {createIframe(data)})
+    downloadButton.addEventListener('click', () => {createIframe(data, true)})
+
+
+
+    function downloadString(text, fileType, fileName) {
+        var blob = new Blob([text], {type: fileType});
+
+        var a = document.createElement('a');
+        a.download = fileName;
+        a.href = URL.createObjectURL(blob);
+        a.dataset.downloadurl = [fileType, a.download, a.href].join(':');
+        a.style.display = "none";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function () {URL.revokeObjectURL(a.href);}, 1500);
+    }
+
+
+
 
 
 
@@ -268,12 +290,50 @@
      * create iframe and load all content to it
      * 
      */
-    function createIframe(data) {
+    function createIframe(data, download = false) {
         data[0] = editor['html'].getValue();
         data[1] = editor['css'].getValue();
         data[2] = editor['javascript'].getValue();
+
+        // JS will not load on startup in console :-(
+        //
+        // var resultIframe = parent.document.getElementById("resultIframe");
+        // var iframe_head = resultIframe.contentWindow.document.getElementsByTagName("head")[0];
+        // var iframe_body = resultIframe.contentWindow.document.getElementsByTagName("body")[0];
+
+        // // ADD CSS from editor
+        // var style_elem = document.createElement('style');
+        // style_elem.textContent = data[1];
+        // iframe_head.appendChild(style_elem);
+
+        // // ADD HTML from editor
+        // iframe_body.innerHTML = data[0];
+
+        // // ADD HTML for console
+        // var console_div = document.createElement('div');
+        // console_div.id = 'console';
+        // iframe_body.appendChild(console_div);
+
+        // // ADD JS for console
+        // var console_elem = document.createElement('script');
+        // console_elem.setAttribute('async', '');
+        // console_elem.src = './console.js';
+        // iframe_body.appendChild(console_elem);
+
+        // // ADD JS from editor
+        // var script_elem = document.createElement('script');
+        // script_elem.textContent = data[2];
+        // // script_elem.textContent = `window.addEventListener("load", function () {${data[2]} })`;
+        // iframe_body.appendChild(script_elem);
+
+
+
+
+
+
         let html_string = `
             <!DOCTYPE html>
+            <html>
             <head>
                 <style>${data[1]}</style>
             </head>
@@ -286,12 +346,15 @@
                 ${data[2]}
                 });
             <\/script>
+            <\/html>
                 `;
         iframe.src = "data:text/html;charset=utf-8," + escape(html_string);
         runButton.classList.remove('change');
+        if (download) {
+            downloadString(html_string, "text/csv", "index.html")
+        }
 
     }
-
 
 
 
@@ -352,6 +415,11 @@
             },
             theme: 'vs-dark',
         });
+
+
+
+
+
     }
 
 </script>

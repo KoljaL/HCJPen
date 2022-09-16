@@ -2,7 +2,7 @@
 // HELPER
 //
 
-// const deb = console.log.bind(window.console);
+const deb = console.log.bind(window.console);
 const select = document.querySelector.bind(document);
 const selectAll = document.querySelectorAll.bind(document);
 
