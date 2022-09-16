@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>monaco editor</title>
+
+  <!-- MONACO CSS -->
+  <link rel="stylesheet" data-name="vs/editor/editor.main" href="assets/vs/editor/editor.main.css">
+</head>
+
+<body style="background-color: rgb(140, 190, 190);">
+  <h1>monaco editor</h1>
+  <div id="monaco_editor" style="height:400px">
+  </div>
+
+  <!-- MONACO JS -->
+  <script>var require = {paths: {'vs': 'assets/vs'}};</script>
+
+  <script src="assets/vs/loader.js"></script>
+  <script src="assets/vs/editor/editor.main.nls.js"></script>
+  <script src="assets/vs/editor/editor.main.js"></script>
+
+  <script>
+    // CREATE AN EDITOR
+    var h_div = document.getElementById('monaco_editor');
+    var editor = monaco.editor.create(h_div, {
+      value: [
+        'function x() {',
+        '\tconsole.log("Hello world!");',
+        '}'
+      ].join('\n'),
+      language: 'javascript'
+    });
+  </script>
+</body>
+
+</html>

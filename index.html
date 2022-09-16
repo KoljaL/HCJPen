@@ -9,7 +9,8 @@
     <link rel="icon" type="image/png" sizes="32x32"
         href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABHNCSVQICAgIfAhkiAAAAdpJREFUaIHlmm1uwzAIhiHaJdp7ZfdIpfYQmZTeI71j2Z9Z8rzYBgOOrL2/2jTBmMfgjxThR0SEt8frDQNoW+cJEQkAYAIAIKLLKM4DANwerzcRXQAAcKTIp9rWecLlvtPZjmg0ne2AVsN34MPL8PPr89f35b67tONCIHU+d81CpgRqTobfLWmYEZBE2JKGmkBprB9FPFyzoqEi0JKo6T1aGk0EtBUm3G9BQ0zAsjxa0GAT8KrrWhosAj0mpVYaRQK9ZtPUvoRGlkBv50ttlWi4rIXSBj1m4KBDApq1TOk+jY3cs6IyWnPuaNgdDQeLTgZVhxAnsWr5ktoInzk2ah1i58By3/84kLvP00YqURKXosJt1MJGrP+1peQkXy2KFjZisQnkKoxk0rGwkerwXKhkoBQdbiWR2Kg9J8qBGlpOzZfaqCl7MqddC/V63q0KxQ16LgSzHZAuAawkHXZFAtoKIRVnLZWKNYS8abQkexA7B7xotEQ9ljiJrWhooh6rqQppaWijHktVRls2K9Z7bbNXTNJhZDU3mE1kEocsJzbTU4naNrDbqYRWR456LSfc3pH1Oggbfks5fge2dR62E9s6TxMi0rbO17OdkWpb5ysiEoYLI/3pI/67zTedx0h7KK4XJQAAAABJRU5ErkJggg==">
     <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" fileContent-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.0/min/vs/editor/editor.main.min.css">
+    <link rel="stylesheet" data-name="vs/editor/editor.main" href="./assets/vs/editor/editor.main.css">
+
 
     <style>
         :root {
@@ -121,6 +122,12 @@
         .menu {
             padding-left: 1rem;
         }
+
+        .resultBox iframe {
+            height: 100%;
+            width: 100%;
+            border: none;
+        }
     </style>
 </head>
 
@@ -196,7 +203,12 @@
     </footer>
 </body>
 <script src="./main.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.0/min/vs/loader.min.js"></script>
+<script src="./console.js"></script>
+<script>var require = {paths: {'vs': 'assets/vs'}};</script>
+<script src="assets/vs/loader.js"></script>
+<script src="assets/vs/editor/editor.main.nls.js"></script>
+<script src="assets/vs/editor/editor.main.js"></script>
+
 <script>
     // https://dev.to/pulljosh/how-to-load-html-css-and-js-code-into-an-iframe-2blc
     var editor = {};
@@ -209,9 +221,14 @@
 
 
 
-    runButton.addEventListener('click', () => {
-        createIframe(data);
-    })
+    /**
+     * 
+     * RUN button
+     * 
+     */
+    runButton.addEventListener('click', () => {createIframe(data)})
+
+
 
     /**
      * 
@@ -255,14 +272,21 @@
         data[0] = editor['html'].getValue();
         data[1] = editor['css'].getValue();
         data[2] = editor['javascript'].getValue();
-        iframe.setAttribute("style", "height:100%;width:100%;border:none;");
         let html_string = `
             <!DOCTYPE html>
             <head>
                 <style>${data[1]}</style>
             </head>
             ${data[0]}
-            <script>${data[2]}<\/script>`;
+            <div id="console"></div>
+
+            <script src="http://127.0.0.1:5500/console.js" async><\/script>
+            <script>
+                window.addEventListener("load", function () {
+                ${data[2]}
+                });
+            <\/script>
+                `;
         iframe.src = "data:text/html;charset=utf-8," + escape(html_string);
         runButton.classList.remove('change');
 
@@ -304,37 +328,29 @@
      * 
      */
     function loadEditor(element, fileContent, lang) {
-        require.config({
-            paths: {
-                'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.0/min/vs'
-            }
-        });
-        require(["vs/editor/editor.main"], () => {
-            editor[lang] = monaco.editor.create(element, {
-                value: fileContent,
-                language: lang,
-                lineNumbers: "on",
-                roundedSelection: true,
-                scrollBeyondLastLine: true,
-                readOnly: false,
-                formatOnPaste: true,
-                formatOnType: true,
-                minimap: {
-                    enabled: false
-                },
-                automaticLayout: true,
-                contextmenu: true,
-                fontSize: 14,
-                scrollbar: {
-                    useShadows: false,
-                    vertical: "hidden",
-                    horizontal: "visible",
-                    horizontalScrollbarSize: 12,
-                    verticalScrollbarSize: 0
-                },
-                theme: 'vs-dark',
-            });
-            // deb(select(".CSSbox .editor"))
+        editor[lang] = monaco.editor.create(element, {
+            value: fileContent,
+            language: lang,
+            lineNumbers: "on",
+            roundedSelection: true,
+            scrollBeyondLastLine: true,
+            readOnly: false,
+            formatOnPaste: true,
+            formatOnType: true,
+            minimap: {
+                enabled: false
+            },
+            automaticLayout: true,
+            contextmenu: true,
+            fontSize: 14,
+            scrollbar: {
+                useShadows: false,
+                vertical: "hidden",
+                horizontal: "visible",
+                horizontalScrollbarSize: 12,
+                verticalScrollbarSize: 0
+            },
+            theme: 'vs-dark',
         });
     }
 
