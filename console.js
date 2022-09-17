@@ -21,62 +21,315 @@
   const timeKeeper = {};
   const countKeeper = {};
 
+  const details = document.createElement("details");
+  details.className = 'as-console-details';
+
+  const summary = document.createElement("summary");
+  summary.innerText = 'Console';
+  // summary.setAttribute('onclick','resize()');
+  summary.className = 'as-console-summary';
+
   const wrapper = document.createElement("div");
   const div = document.createElement("div");
   const style = document.createElement("style");
 
   /* settings */
-  let maxEntries = 50;
+  let maxEntries = 150;
   let maximized = false;
   let autoScroll = true;
 
   wrapper.className = "as-console-wrapper as-console-timestamps";
   div.className = "as-console";
+
+  details.appendChild(summary);
+  details.appendChild(div);
+  wrapper.appendChild(details);
+
   if (document.getElementById('console')){
-    document.getElementById('console').appendChild(wrapper).appendChild(div);
+    document.getElementById('console').appendChild(wrapper);
   }else{
     // return;
-    document.body.appendChild(wrapper).appendChild(div);
+    document.body.appendChild(wrapper);
   }
 
   style.type = "text/css";
-  style.textContent = [
-      ".as-console-wrapper { position: fixed; bottom: 0; left: 0; right: 0; max-height: 250px; overflow-y: scroll; overflow-x: hidden; border-top: 1px solid #000; display: none; color: #ccc; background: rgb(57, 57, 57); }",
-      ".as-console-wrapper.as-console-maximized { top: 0px; max-height: inherit; display:block; background: rgb(57, 57, 57); border-top: none;  }",
-      ".as-console { border: none; display: table; width: 100%; border-collapse: collapse; }",
-      ".as-console-row { display: table-row; font-family: monospace; font-size: 10pt; }",
-      ".as-console-timestamps .as-console-row:after { display: table-cell; display:none; padding: 3px 6px; color: rgba(0,0,0,.35); border: none; content: attr(data-date); vertical-align: top; }",
-      ".as-console-row + .as-console-row > * { border: none; }",
-      ".as-console-row-code { width: 100%; white-space: pre-wrap; padding: 3px 5px; display: table-cell; font-family: monospace; font-size: 13px; vertical-align: middle; }",
-      ".as-console-error:before { content: 'Error: '; color: #f00; }",
-      ".as-console-assert:before { content: 'Assertion failed: '; color: #f00; }",
-      ".as-console-info:before { content: 'Info: '; color: #6363EA; }",
-      ".as-console-warning:before { content: 'Warning: '; color: #e90 }", 
-      ".as-console-row-code, .as-console-row:after { -webkit-animation: as-console-flash 1s; -moz-animation: as-console-flash 1s; -ms-animation: as-console-flash 1s; animation: as-console-flash 1s; }",
-      ".as-console-dictionary { margin: 0; padding: 0 0 0 20px; background-color: rgb(57, 57, 57); list-style: none; white-space: normal; }",
-      ".as-console-dictionary-label { color: #8f4b99; }",
-      ".as-console-dictionary-label::after { content: ':'; margin-right: 6px; font-style: normal;}",
-      ".as-console-expandable-value { cursor: default; white-space: nowrap; }",
-      ".as-console-expandable-value::before { content: ''; display: inline-block; margin: 0 4px 0 0; width: 8.316px; height: 7.2px; background-size: 100%; background-repeat: no-repeat; background-position: center center; background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMTMuODU2cHgiIGhlaWdodD0iMTJweCIgdmlld0JveD0iMCAwIDEzLjg1NiAxMiIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMTMuODU2IDEyIj48cG9seWdvbiBmaWxsPSIjQ0NDQ0NDIiBwb2ludHM9IjEzLjg1NiwwIDYuOTI4LDEyIDAsMCAiLz48L3N2Zz4='); }",
-      ".as-console-collapsed-value::before { transform-origin: center center; transform: rotate(-90deg); margin: 0 4px 1px 0;  }",
-      ".as-console-collapsed-value .as-console-dictionary { display: none; }",
-      ".as-console-ellipsis { display: none; }",
-      ".as-console-collapsed-value .as-console-ellipsis { display: inline; }",
-      ".as-console-type-label, .as-console-nil-value { color: #808080; }",
-      ".as-console-literal-value, .as-console-expandable-value .as-console-string-value { color: #BB4A4A; }",
-      ".as-console-expandable-value .as-console-string-value::before, .as-console-expandable-value .as-console-string-value::after { content: '\"'; color: #000; }",
-      ".as-console-keyword { color: #6363EA; }",
-      ".as-console-non-enumerable-value > .as-console-dictionary-label { color: #b571be; }",
-      ".as-console-function-preview { font-style: italic; }",
-      ".as-console-table { width: 100%; table-layout: fixed; border-collapse: collapse; background-color: rgb(57, 57, 57); border: 1px solid #aaa; }",
-      ".as-console-table thead { background-color: #f3f3f3; border-bottom: 1px solid #aaa; }",
-      ".as-console-table th { font-weight: normal; text-align: left; }",
-      ".as-console-table th, .as-console-table td { padding: 3px 6px; border-style: solid; border-width: 0 1px; border-color: #aaa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }",
-      ".as-console-table tbody tr:nth-of-type(even) {background-color: #f3f7fd;}",
-      ".as-console-helper-property > .as-console-dictionary-label {font-style: italic;}"
-  ].join("\n");
 
+  style.textContent = /*CSS*/`
+  :root{
+    --bg-main-color: rgb(57, 57, 57);
+    --bg-header-color: rgb(30,30,30);
+  }
+
+  .as-console-wrapper {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-height: 250px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    border-top: 1px solid #000;
+    display: none;
+    color: #ccc;
+    background: var(--bg-main-color);
+  }
+  .as-console-summary{
+    position: fixed;
+    width: 100%;
+    height:20px;
+    z-index: 111;
+    background: var(--bg-header-color);
+    cursor:pointer;
+  }
+ 
+  .as-console-details{ 
+    min-height:20px;
+    height: max-content;
+    position: relative; 
+
+  }
+ 
+  
+  .as-console {
+    border: none;
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+    position: relative;
+    top: 20px;
+    bottom: -20px;
+  }
+  
+  .as-console-row {
+    display: table-row;
+    font-family: monospace;
+    font-size: 10pt;
+  }
+  
+  .as-console-timestamps .as-console-row:after {
+    display: table-cell;
+    display: none;
+    padding: 3px 6px;
+    color: rgba(0, 0, 0, .35);
+    border: none;
+    content: attr(data-date);
+    vertical-align: top;
+  }
+  
+  .as-console-row+.as-console-row>* {
+    border: none;
+  }
+  
+  .as-console-row-code {
+    width: 100%;
+    white-space: pre-wrap;
+    padding: 3px 5px;
+    display: table-cell;
+    font-family: monospace;
+    font-size: 13px;
+    vertical-align: middle;
+  }
+  
+  .as-console-error:before {
+    content: 'Error: ';
+    color: #f00;
+  }
+  
+  .as-console-assert:before {
+    content: 'Assertion failed: ';
+    color: #f00;
+  }
+  
+  .as-console-info:before {
+    content: 'Info: ';
+    color: #6363EA;
+  }
+  
+  .as-console-warning:before {
+    content: 'Warning: ';
+    color: #e90
+  }
+  
+  .as-console-row-code,
+  .as-console-row:after {
+    -webkit-animation: as-console-flash 1s;
+    -moz-animation: as-console-flash 1s;
+    -ms-animation: as-console-flash 1s;
+    animation: as-console-flash 1s;
+  }
+  
+  .as-console-dictionary {
+    margin: 0;
+    padding: 0 0 0 20px;
+    background-color: rgb(57, 57, 57);
+    list-style: none;
+    white-space: normal;
+  }
+  
+  .as-console-dictionary-label {
+    color: #8f4b99;
+  }
+  
+  .as-console-dictionary-label::after {
+    content: ':';
+    margin-right: 6px;
+    font-style: normal;
+  }
+  
+  .as-console-expandable-value {
+    cursor: default;
+    white-space: nowrap;
+  }
+  
+  .as-console-expandable-value::before {
+    content: '';
+    display: inline-block;
+    margin: 0 4px 0 0;
+    width: 8.316px;
+    height: 7.2px;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMTMuODU2cHgiIGhlaWdodD0iMTJweCIgdmlld0JveD0iMCAwIDEzLjg1NiAxMiIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMTMuODU2IDEyIj48cG9seWdvbiBmaWxsPSIjQ0NDQ0NDIiBwb2ludHM9IjEzLjg1NiwwIDYuOTI4LDEyIDAsMCAiLz48L3N2Zz4=');
+  }
+  
+  .as-console-collapsed-value::before {
+    transform-origin: center center;
+    transform: rotate(-90deg);
+    margin: 0 4px 1px 0;
+  }
+  
+  .as-console-collapsed-value .as-console-dictionary {
+    display: none;
+  }
+  
+  .as-console-ellipsis {
+    display: none;
+  }
+  
+  .as-console-collapsed-value .as-console-ellipsis {
+    display: inline;
+  }
+  
+  .as-console-type-label,
+  .as-console-nil-value {
+    color: #808080;
+  }
+  
+  .as-console-literal-value,
+  .as-console-expandable-value .as-console-string-value {
+    color: #BB4A4A;
+  }
+  
+  .as-console-expandable-value .as-console-string-value::before,
+  .as-console-expandable-value .as-console-string-value::after {
+    content: '\\';
+    color: #000;
+  }
+  
+  .as-console-keyword {
+    color: #6363EA;
+  }
+  
+  .as-console-non-enumerable-value>.as-console-dictionary-label {
+    color: #b571be;
+  }
+  
+  .as-console-function-preview {
+    font-style: italic;
+  }
+  
+  .as-console-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    background-color: rgb(57, 57, 57);
+    border: 1px solid #aaa;
+  }
+  
+  .as-console-table thead {
+    background-color: #f3f3f3;
+    border-bottom: 1px solid #aaa;
+  }
+  
+  .as-console-table th {
+    font-weight: normal;
+    text-align: left;
+  }
+  
+  .as-console-table th,
+  .as-console-table td {
+    padding: 3px 6px;
+    border-style: solid;
+    border-width: 0 1px;
+    border-color: #aaa;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .as-console-table tbody tr:nth-of-type(even) {
+    background-color: #f3f7fd;
+  }
+  
+  .as-console-helper-property>.as-console-dictionary-label {
+    font-style: italic;
+  }
+  `; 
   document.head.appendChild(style);
+
+
+
+ 
+    const resizeEl = document.querySelector('.as-console-wrapper');
+    let y = 0;
+    let MaxHeight = 0;
+    let resizeElHeight;
+
+    const mouseDownHandler = function(e) {
+        y = e.clientY;
+        resizeElHeight = resizeEl.getBoundingClientRect().height; 
+        //  console.log(resizeElHeight)
+
+        document.addEventListener('mousemove', mouseMoveHandler);
+        document.addEventListener('mouseup', mouseUpHandler);
+    };
+
+
+
+    const mouseMoveHandler = function(e) {
+            const dy = e.clientY - y;
+            const newMaxHeight = resizeElHeight - dy;
+            resizeEl.style.maxHeight = `${newMaxHeight}px`;
+
+            resizer.style.cursor = 'row-resize';
+            document.body.style.cursor = 'row-resize';
+        
+        // STYLE
+        resizeEl.style.userSelect = 'none';
+        resizeEl.style.pointerEvents = 'none';
+    };
+
+
+
+    const mouseUpHandler = function() {
+        document.removeEventListener('mousemove', mouseMoveHandler);
+        document.removeEventListener('mouseup', mouseUpHandler);
+        // STYLE
+        resizer.style.removeProperty('cursor');
+        document.body.style.removeProperty('cursor');
+        resizeEl.style.removeProperty('user-select');
+        resizeEl.style.removeProperty('pointer-events');
+    };
+
+
+    const resizer = document.querySelector('.as-console-summary');
+    resizer.addEventListener('mousedown', mouseDownHandler);
+  
+  
+
+
+
 
   function formatDate(d) {
       let ms = d.valueOf();
