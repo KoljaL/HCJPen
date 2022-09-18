@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iframe</title>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const filename = urlParams.get('file')
+    let file;
+    if (filename) {
+      file = JSON.parse(localStorage.getItem(filename));
+    }
+    if (!filename || !file) {
+      file = {
+        html: '<h1>Pen</h1>',
+        css: 'h1{color:gold;}',
+        js: 'console.log("Pen")'
+      };
+    }
+  </script>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      color: #ccc;
+      background: rgb(57, 57, 57);
+      font-family: 'Lato', 'Lucida Grande', 'Lucida Sans Unicode', Tahoma, Sans-Serif;
+      line-height: 1.5;
+      font-size: 15px;
+      font-weight: 400;
+    }
+  </style>
+</head>
+
+<body>
+</body>
+<script src="./console.js" async></script>
+<script>
+
+
+  // CSS element
+  const style = document.createElement("style");
+  style.type = "text/css";
+  style.textContent = file[1];
+  document.head.appendChild(style);
+
+  // HTML element
+  document.body.innerHTML = file[0];
+
+  // JS element
+  const script = document.createElement("script");
+
+  script.textContent = `document.addEventListener('load', function() {${file[2]}});`;
+  document.head.appendChild(script);
+</script>
+
+</html>

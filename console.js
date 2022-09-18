@@ -22,6 +22,7 @@
   const countKeeper = {};
 
   const details = document.createElement("details");
+  details.setAttribute('open','');
   details.className = 'as-console-details';
 
   const summary = document.createElement("summary");
@@ -69,7 +70,7 @@
     overflow-y: scroll;
     overflow-x: hidden;
     border-top: 1px solid #000;
-    display: none;
+    // display: none;
     color: #ccc;
     background: var(--bg-main-color);
   }
@@ -97,24 +98,24 @@
     border-collapse: collapse;
     position: relative;
     top: 20px;
-    bottom: -20px;
+    min-height: 150px;
   }
   
   .as-console-row {
-    display: table-row;
+    // display: table-row;
     font-family: monospace;
     font-size: 10pt;
   }
   
-  .as-console-timestamps .as-console-row:after {
-    display: table-cell;
-    display: none;
-    padding: 3px 6px;
-    color: rgba(0, 0, 0, .35);
-    border: none;
-    content: attr(data-date);
-    vertical-align: top;
-  }
+//   .as-console-timestamps .as-console-row:after {
+//     display: table-cell;
+//     display: none;
+//     padding: 3px 6px;
+//     color: rgba(0, 0, 0, .35);
+//     border: none;
+//     content: attr(data-date);
+//     vertical-align: top;
+//   }
   
   .as-console-row+.as-console-row>* {
     border: none;
@@ -124,7 +125,7 @@
     width: 100%;
     white-space: pre-wrap;
     padding: 3px 5px;
-    display: table-cell;
+    // display: table-cell;
     font-family: monospace;
     font-size: 13px;
     vertical-align: middle;
