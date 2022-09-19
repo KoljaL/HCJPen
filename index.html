@@ -8,136 +8,18 @@
     <title>HCJPen</title>
     <link rel="icon" type="image/png" sizes="32x32"
         href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABHNCSVQICAgIfAhkiAAAAdpJREFUaIHlmm1uwzAIhiHaJdp7ZfdIpfYQmZTeI71j2Z9Z8rzYBgOOrL2/2jTBmMfgjxThR0SEt8frDQNoW+cJEQkAYAIAIKLLKM4DANwerzcRXQAAcKTIp9rWecLlvtPZjmg0ne2AVsN34MPL8PPr89f35b67tONCIHU+d81CpgRqTobfLWmYEZBE2JKGmkBprB9FPFyzoqEi0JKo6T1aGk0EtBUm3G9BQ0zAsjxa0GAT8KrrWhosAj0mpVYaRQK9ZtPUvoRGlkBv50ttlWi4rIXSBj1m4KBDApq1TOk+jY3cs6IyWnPuaNgdDQeLTgZVhxAnsWr5ktoInzk2ah1i58By3/84kLvP00YqURKXosJt1MJGrP+1peQkXy2KFjZisQnkKoxk0rGwkerwXKhkoBQdbiWR2Kg9J8qBGlpOzZfaqCl7MqddC/V63q0KxQ16LgSzHZAuAawkHXZFAtoKIRVnLZWKNYS8abQkexA7B7xotEQ9ljiJrWhooh6rqQppaWijHktVRls2K9Z7bbNXTNJhZDU3mE1kEocsJzbTU4naNrDbqYRWR456LSfc3pH1Oggbfks5fge2dR62E9s6TxMi0rbO17OdkWpb5ysiEoYLI/3pI/67zTedx0h7KK4XJQAAAABJRU5ErkJggg==">
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./assets/style.css">
     <link rel="stylesheet" data-name="vs/editor/editor.main" href="./assets/vs/editor/editor.main.css">
-
-
-    <style>
-        :root {
-            --bg-main: rgb(57, 57, 57);
-            --bg-header: rgb(24, 24, 24);
-            --bg-subheader: rgb(32, 32, 32);
-            --text-color: #ccc;
-            --HTML-color: #F14A29;
-            --CSS-color: #264de4;
-            --JS-color: #F7E018;
-            --header-height: 50px;
-            --footer-height: 25px;
-            --codeBoxes-width: 500px;
-            --codeboxes-height: calc((100vh - var(--header-height) - var(--footer-height)) / 3);
-        }
-
-        body {
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            color: var(--text-color);
-            background: var(--bg-main);
-            font-family: 'Lato', 'Lucida Grande', 'Lucida Sans Unicode', Tahoma, Sans-Serif;
-            line-height: 1.5;
-            font-size: 15px;
-            font-weight: 400;
-        }
-
-
-
-        header {
-            flex-shrink: 0;
-            height: var(--header-height);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: var(--bg-header);
-        }
-
-        footer {
-            flex-shrink: 0;
-            height: var(--footer-height);
-            display: flex;
-            align-items: center;
-            justify-content: end;
-            background: var(--bg-header);
-        }
-
-        main {
-            flex-grow: 1;
-            display: flex;
-            flex-wrap: nowrap;
-        }
-
-        .divider {
-            width: 10px;
-            height: calc(100vh - var(--bg-header) - var(--footer-height));
-            background: var(--bg-header);
-            cursor: pointer;
-        }
-
-        .resultBox {
-            flex-shrink: 1;
-            width: 100%;
-        }
-
-        .codeBoxes {
-            width: var(--codeBoxes-width);
-            border-right: 1px solid var(--bg-header);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .codeBox {
-            max-height: var(--codeboxes-height);
-            height: var(--codeboxes-height);
-            /* overflow: scroll; */
-            overflow: hidden;
-            min-height: 1.5rem;
-        }
-
-        .codeBox .header {
-            height: 1.5rem;
-            background: var(--bg-subheader);
-            padding-left: 1rem;
-            cursor: row-resize;
-        }
-
-        .codeBox .editor {
-            color: var(--text-color);
-            overflow: scroll;
-            height: 100%;
-        }
-
-        .HTMLbox {
-            color: var(--HTML-color);
-        }
-
-        .CSSbox {
-            color: var(--CSS-color);
-            flex-grow: 1;
-        }
-
-        .JSbox {
-            color: var(--JS-color);
-            flex-grow: 1;
-        }
-
-        .menu {
-            padding-left: 1rem;
-        }
-
-        .resultBox iframe {
-            height: 100%;
-            width: 100%;
-            border: none;
-        }
-    </style>
 </head>
 
 <body>
     <header>
         <div class="menu">
-            <button class="run">run</button>
-            <button class="download">download</button>
+            <button class="run"></button>
+            <button class="download"></button>
+            <a class=fullpageLink href="./iframe.html" target="_blank" rel="noopener noreferrer">
+                <button class="fullpage"></button>
+            </a>
         </div>
 
         <h1><span style="color: var(--HTML-color)">H</span><span style="color: var(--CSS-color)">C</span><span style="color: var(--JS-color)">J</span>-Pen</h1>
@@ -205,7 +87,7 @@
         </div>
     </footer>
 </body>
-<script src="./main.js"></script>
+<script src="./assets/main.js"></script>
 <script>var require = {paths: {'vs': 'assets/vs'}};</script>
 <script src="assets/vs/loader.js"></script>
 <script src="assets/vs/editor/editor.main.nls.js"></script>
@@ -216,8 +98,10 @@
     var editor = {};
     var data = {};
     var html, css, js;
+    let filename = 'HCJPen';
     var iframe = select('.resultBox iframe');
     const runButton = select('header .run');
+    const fullpageLink = select('header .fullpageLink');
     const downloadButton = select('header .download');
     window.onload = function () {
         loadFileContent('default');
@@ -313,9 +197,11 @@
         data[2] = editor['javascript'].getValue();
 
         // save to localStorage & reload iframe
-        let filename = 'HCJPen'
         localStorage.setItem(filename, JSON.stringify(data));
-        iframe.src = 'iframe.html?file=' + filename
+        iframe.src = 'iframe.html?console&file=' + filename
+
+        // add filename to fullpage link
+        fullpageLink.href = 'iframe.html?file=' + filename
 
         // reset bitton boarder
         runButton.classList.remove('change');
@@ -355,6 +241,25 @@
      * 
      */
     function loadEditor(element, fileContent, lang) {
+
+        monaco.editor.defineTheme('OneDark', {
+            base: 'vs-dark',
+            inherit: true,
+            rules: [
+                {token: 'comment', foreground: '#7f848e'},
+                {token: 'attribute.value.html', foreground: '#98C379'},
+                {token: 'attribute.name.html', foreground: '#D19A66'},
+                {token: 'tag.html', foreground: '#E06C75'},
+                {token: 'tag.css', foreground: '#D19A66'},
+
+            ],
+            colors: {
+                "editor.background": "#151515",
+
+            }
+        });
+
+
         editor[lang] = monaco.editor.create(element, {
             value: fileContent,
             language: lang,
@@ -377,8 +282,10 @@
                 horizontalScrollbarSize: 12,
                 verticalScrollbarSize: 0
             },
-            theme: 'vs-dark',
+            theme: 'OneDark',
         });
+
+
     }
 
 </script>

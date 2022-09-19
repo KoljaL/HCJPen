@@ -5,28 +5,43 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32"
+    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABHNCSVQICAgIfAhkiAAAAdpJREFUaIHlmm1uwzAIhiHaJdp7ZfdIpfYQmZTeI71j2Z9Z8rzYBgOOrL2/2jTBmMfgjxThR0SEt8frDQNoW+cJEQkAYAIAIKLLKM4DANwerzcRXQAAcKTIp9rWecLlvtPZjmg0ne2AVsN34MPL8PPr89f35b67tONCIHU+d81CpgRqTobfLWmYEZBE2JKGmkBprB9FPFyzoqEi0JKo6T1aGk0EtBUm3G9BQ0zAsjxa0GAT8KrrWhosAj0mpVYaRQK9ZtPUvoRGlkBv50ttlWi4rIXSBj1m4KBDApq1TOk+jY3cs6IyWnPuaNgdDQeLTgZVhxAnsWr5ktoInzk2ah1i58By3/84kLvP00YqURKXosJt1MJGrP+1peQkXy2KFjZisQnkKoxk0rGwkerwXKhkoBQdbiWR2Kg9J8qBGlpOzZfaqCl7MqddC/V63q0KxQ16LgSzHZAuAawkHXZFAtoKIRVnLZWKNYS8abQkexA7B7xotEQ9ljiJrWhooh6rqQppaWijHktVRls2K9Z7bbNXTNJhZDU3mE1kEocsJzbTU4naNrDbqYRWR456LSfc3pH1Oggbfks5fge2dR62E9s6TxMi0rbO17OdkWpb5ysiEoYLI/3pI/67zTedx0h7KK4XJQAAAABJRU5ErkJggg==">
+
   <title>Iframe</title>
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const filename = urlParams.get('file')
+    const SearchParams = new URLSearchParams(window.location.search);
+
+    // show console only in editor view, not in fullpage
+    let showconsole = SearchParams.get('console');
+    if (showconsole !== null) {
+      document.write('<script type="text/javascript"  src="./assets/console.js" async><\/script>');
+    }
+
+    // get filename from url ?file=filename
+    let filename = SearchParams.get('file');
     let file;
     if (filename) {
       file = JSON.parse(localStorage.getItem(filename));
     }
+    // default values
     if (!filename || !file) {
       file = {
-        html: '<h1>Pen</h1>',
-        css: 'h1{color:gold;}',
-        js: 'console.log("Pen")'
+        0: '<h1>HCJ - Pen</h1><h2>loading...<h2>',
+        1: 'h1{color:gold;}',
+        2: 'console.log("Pen")'
       };
     }
+
+    // CSS element from editor
+    document.write('<style type="text/css">' + file[1] + '<\/style>');
+
+
   </script>
   <style>
     body {
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
+      margin: 1rem;
+      height: 97vh;
       color: #ccc;
       background: rgb(57, 57, 57);
       font-family: 'Lato', 'Lucida Grande', 'Lucida Sans Unicode', Tahoma, Sans-Serif;
@@ -38,25 +53,22 @@
 </head>
 
 <body>
+  <script>
+
+    // HTML element from editor
+    document.body.innerHTML = file[0];
+
+    // JS element from editor
+    setTimeout(() => {
+      const script = document.createElement("script");
+      script.textContent = `${file[2]}`;
+      document.body.appendChild(script);
+    }, 200);
+
+
+    // JS element
+
+  </script>
 </body>
-<script src="./console.js" async></script>
-<script>
-
-
-  // CSS element
-  const style = document.createElement("style");
-  style.type = "text/css";
-  style.textContent = file[1];
-  document.head.appendChild(style);
-
-  // HTML element
-  document.body.innerHTML = file[0];
-
-  // JS element
-  const script = document.createElement("script");
-
-  script.textContent = `document.addEventListener('load', function() {${file[2]}});`;
-  document.head.appendChild(script);
-</script>
 
 </html>
