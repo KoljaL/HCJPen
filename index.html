@@ -88,10 +88,8 @@
     </footer>
 </body>
 <script src="./assets/main.js"></script>
-<script>var require = {paths: {'vs': 'assets/vs'}};</script>
-<script src="assets/vs/loader.js"></script>
-<script src="assets/vs/editor/editor.main.nls.js"></script>
-<script src="assets/vs/editor/editor.main.js"></script>
+<!-- <script>var require = {paths: {'vs': 'assets/vs'}};</script> -->
+
 
 <script>
     // https://dev.to/pulljosh/how-to-load-html-css-and-js-code-into-an-iframe-2blc
@@ -240,6 +238,7 @@
      * load monaco editor
      * 
      */
+    var require = {paths: {'vs': 'assets/vs'}};
     function loadEditor(element, fileContent, lang) {
 
         monaco.editor.defineTheme('OneDark', {
@@ -289,5 +288,8 @@
     }
 
 </script>
+<script src="assets/vs/loader.js"></script>
+<script src="assets/vs/editor/editor.main.nls.js"></script>
+<script src="assets/vs/editor/editor.main.js"></script>
 
 </html>
