@@ -1,0 +1,5 @@
+{
+"html": "<div>\n    <ul>\n        <li>eins</li>\n        <li>eins</li>\n        <li>eins</li>\n        <li>eins</li>\n        <li>eins</li>\n        <li>eins</li>\n        <li>eins</li>\n        <li>eins</li>\n    </ul>\n</div>\n\n<button id=\"test\">Test</button>",
+"css": "ul {\n    color: goldenrod\n}\n\nbutton{\n    border: 1px solid darkorange;\n    border-radius: 5px;\n    background: transparent;\n    color: #ccc;\n    padding: 4px 8px;\n    cursor:pointer;\n}",
+"js": "console.info('Welcome to HCJ');\n\ndocument.getElementById('test').addEventListener('click', () => {\n  console.log('Test button clicked')\n})\n\nlet li = document.querySelectorAll('li');\nconsole.log(li)"
+}

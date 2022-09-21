@@ -213,22 +213,21 @@
      * 
      */
     function loadFileContent(file) {
-        html = fetch(`./code/${file}/${file}.html`).then((res) => res.text());
-        css = fetch(`./code/${file}/${file}.css`).then((res) => res.text());
-        js = fetch(`./code/${file}/${file}.js`).then((res) => res.text());
-
-        Promise.all([html, css, js]).then((data) => {
-            // console.log(res);
-            loadEditor(select(".HTMLbox .editor"), data[0], 'html');
-            loadEditor(select(".CSSbox .editor"), data[1], 'css');
-            loadEditor(select(".JSbox .editor"), data[2], 'javascript');
-            return data
-        })
+        fetch(`./code/${file}/${file}.json`)
+            .then((res) => res.json())
+            .then((data) => {
+                // console.log(data);
+                loadEditor(select(".HTMLbox .editor"), data.html, 'html');
+                loadEditor(select(".CSSbox .editor"), data.css, 'css');
+                loadEditor(select(".JSbox .editor"), data.js, 'javascript');
+                return data
+            })
             .then((data) =>
                 setTimeout(() => {
                     createIframe(data);
                     reloadIframeOnChange();
-                }, 1000));
+                }, 1000)
+            );
     }
 
 
