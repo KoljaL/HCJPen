@@ -36,7 +36,6 @@
 
   /* settings */
   let maxEntries = 150;
-  let maximized = false;
   let autoScroll = true;
 
   wrapper.className = "as-console-wrapper as-console-timestamps";
@@ -66,11 +65,11 @@
     bottom: 0;
     left: 0;
     right: 0;
-    max-height: 250px;
+    max-height: 450px;
+    min-height: 20px;
     overflow-y: scroll;
     overflow-x: hidden;
     border-top: 1px solid #000;
-    // display: none;
     color: #ccc;
     background: var(--bg-main-color);
   }
@@ -245,12 +244,12 @@
     table-layout: fixed;
     border-collapse: collapse;
     background-color: rgb(57, 57, 57);
-    border: 1px solid #aaa;
+    border: 1px solid #282828;
   }
   
   .as-console-table thead {
-    background-color: #f3f3f3;
-    border-bottom: 1px solid #aaa;
+    background-color: #282828;
+    border-bottom: 1px solid #282828;
   }
   
   .as-console-table th {
@@ -263,14 +262,14 @@
     padding: 3px 6px;
     border-style: solid;
     border-width: 0 1px;
-    border-color: #aaa;
+    border-color: #282828;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
   
   .as-console-table tbody tr:nth-of-type(even) {
-    background-color: #f3f7fd;
+    background-color: #686868;
   }
   
   .as-console-helper-property>.as-console-dictionary-label {
@@ -714,118 +713,74 @@
   }
 
   function showConsole(show) {
-      if (maximized) return;
       wrapper.style.display = show ? "block" : "none";
   }
 
   console.log = function (...args) {
-
       _log && _log.apply(console, args);
-
       if (!args.length) return;
-
       createLogEntry(...args);
-
       showConsole(1);
-
   };
 
   console.warn = function (...args) {
-
       _warn && _warn.apply(console, args);
-
       if (!args.length) return;
-
-      createLogEntry(...args)
-          .children[0].classList.add("as-console-warning");
-
+      createLogEntry(...args).children[0].classList.add("as-console-warning");
       showConsole(1);
-
   };
 
   console.info = function () {
-
       let args = arguments;
-
       _info && _info.apply(console, args);
-
       if (!args.length) return;
-
-      createLogEntry(...args)
-          .children[0].classList.add("as-console-info");
-
+      createLogEntry(...args).children[0].classList.add("as-console-info");
       showConsole(1);
-
   };
 
   console.error = function (...args) {
-
       _error && _error.apply(console, args);
-
       if (!args.length) return;
-
       let entry;
       let e = args[0];
-
       if (e instanceof Error) {
           entry = createLogEntry(e);
       } else {
           entry = createLogEntry(...args)
       }
-
       entry.children[0].classList.add("as-console-error");
-
       showConsole(1);
-
   };
 
   console.assert = function (...args) {
-
       _assert && _assert.apply(console, args);
-
       if (!args[0]) {
           let entry = createLogEntry(...args.slice(1));
-
           entry.children[0].classList.add("as-console-assert");
-
           showConsole(1);
       }
   };
 
   console.dir = function (...args) {
-
       _dir && _dir.apply(console, args);
-
       if (!args.length) return;
-
       createLogEntry(args[0]);
-
       showConsole(1);
   };
 
   console.dirxml = function () {
-
       let args = arguments;
-
       _dirxml && _dirxml.apply(console, args);
-
       if (!args.length) return;
-
       let output = args[0];
-
       let serializer = new XMLSerializer();
-
       output = serializer.serializeToString(output);
-
       createLogEntry("%s", output);
-
       showConsole(1);
   };
 
   function getEnumerablePropertyNames(obj) {
-
       let arr = [];
-
       do {
           for (let prop of Object.getOwnPropertyNames(obj)) {
               if (Object.getOwnPropertyDescriptor(obj, prop).enumerable && !arr.includes(prop)) {
@@ -833,15 +788,12 @@
               }
           }
       } while ((obj = Object.getPrototypeOf(obj)) && obj !== Object.prototype);
-
       return arr;
   }
 
 
   function getPropertyNames(obj) {        
-
       let arr = [];               
-
       do {
           for (let prop of Object.getOwnPropertyNames(obj)) {
               if (!arr.includes(prop)) {
@@ -849,7 +801,6 @@
               }
           }
       } while ((obj = Object.getPrototypeOf(obj)) && obj !== Object.prototype);
-
       return arr;
   }
 
@@ -914,35 +865,21 @@
   }
 
   console.table = function (data, columns) {  
-
       let row = document.createElement("div");
       row.className = "as-console-row";
-
       // row.setAttribute("data-date", formatDate(new Date()).slice(11));
-
       let code = row.appendChild(document.createElement("code"));
       code.className = "as-console-row-code";
-
       let props = [];
-
       let table = document.createElement("table");
-
       table.className = "as-console-table";
-
       let thead = document.createElement("thead");
-
       let tbody = document.createElement("tbody");        
-
       let tr = document.createElement("tr");
-
       let td = document.createElement("th");
-
       td.textContent = "(index)";
-
       tr.appendChild(td);        
-
       let scalarIndex = null;
-
       let rows = 0;
 
       iterate(data, function (index, item) {
@@ -975,7 +912,6 @@
       }
 
       thead.appendChild(tr);
-
       table.appendChild(thead);
 
       for (let columnName of columns) {
@@ -1019,84 +955,55 @@
       });
 
       table.appendChild(tbody);
-
       code.appendChild(table);
-
       row.appendChild(code);
-
       div.appendChild(row);
-
       truncateEntries();
-
       if (autoScroll) wrapper.scrollTop = row.offsetTop;
-
       _table && _table.apply(console, arguments);
   };
 
   console.clear = function () {
-
       while (div.lastChild) {
           div.removeChild(div.lastChild);
       }
-
       _clear && _clear.apply(console, arguments);
-
       showConsole(0);
   };
 
   console.time = function (label) {
-
       const now = performance.now();
-
       _time && _time.apply(console, arguments)
-
       if (!arguments.length) label = "default";
-
       timeKeeper[label] = now;
   };
 
   console.timeEnd = function (label) {
-
       const now = performance.now();
-
       _timeEnd && _timeEnd.apply(console, arguments)
-
       if (!arguments.length) label = "default";
-
       if (!(label in timeKeeper)) return;
-
       let diff = now - timeKeeper[label];
-
       delete timeKeeper[label];
-
       createLogEntry("%s: %sms", label, diff.toFixed(3));
-
       showConsole(1);
-
   };
 
   console.count = function (label) {
-
       _count && _count.apply(console, arguments)
-
       if (!arguments.length) label = "";
-
       let count = 1;
-
       if (label in countKeeper) {
           count = ++countKeeper[label];
       } else {
           countKeeper[label] = count;
       }
-
       createLogEntry("%s: %i", label, count);
-
       showConsole(1);
   };
 
   console.config = function (settings) {
       if (!settings && typeof settings !== "object") return;
-
       if ("maxEntries" in settings && settings.maxEntries) {
           let _maxEntries = Number(settings.maxEntries);
           if (!isNaN(maxEntries)) {
@@ -1104,22 +1011,9 @@
               truncateEntries();
           }
       }
-
-      if ("maximize" in settings) {
-          if (settings.maximize) {
-              wrapper.classList.add("as-console-maximized");
-              maximized = true;
-          } else {
-              wrapper.classList.remove("as-console-maximized");
-              maximized = false;
-              showConsole(div.children.length);
-          }
-      }
-
       if ("autoScroll" in settings) {
           autoScroll = settings.autoScroll == true;
       }
-
       if ("timeStamps" in settings) {
           if (settings.timeStamps) {
               wrapper.classList.add("as-console-timestamps");

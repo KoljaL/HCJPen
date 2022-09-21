@@ -68,7 +68,7 @@ main {
     width: 10px;
     height: calc(100vh - var(--bg-header) - var(--footer-height));
     background: var(--bg-header);
-    cursor: pointer;
+    cursor: col-resize;
 }
 
 .resultBox {
@@ -96,6 +96,8 @@ main {
     height: 1.5rem;
     background: var(--bg-subheader);
     padding-left: 1rem;
+}
+.codeBox .header.resize { 
     cursor: row-resize;
 }
 

@@ -78,9 +78,11 @@ function resize(resizer, prevEl, nextEl, direction = 'horizontal') {
             const newPrevMaxHeight = PrevMaxHeight + dy;
             const newNextMaxHeight = NextMaxHeight - dy;
             const newPrevHeight = ((PrevHeight + dy) * 100) / resizer.parentNode.getBoundingClientRect().height;
-            prevEl.style.height = `${newPrevHeight}%`;
-            prevEl.style.maxHeight = `${newPrevMaxHeight}px`;
-            nextEl.style.maxHeight = `${newNextMaxHeight}px`;
+            if(newNextMaxHeight > 23){
+                prevEl.style.height = `${newPrevHeight}%`;
+                prevEl.style.maxHeight = `${newPrevMaxHeight}px`;
+                nextEl.style.maxHeight = `${newNextMaxHeight}px`;
+            }
 
             resizer.style.cursor = 'row-resize';
             document.body.style.cursor = 'row-resize';

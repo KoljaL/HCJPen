@@ -24,6 +24,7 @@
     if (filename) {
       file = JSON.parse(localStorage.getItem(filename));
     }
+
     // default values
     if (!filename || !file) {
       file = {
@@ -39,6 +40,10 @@
 
   </script>
   <style>
+    html {
+      overflow: hidden;
+    }
+
     body {
       margin: 1rem;
       height: 97vh;
@@ -66,7 +71,15 @@
     }, 200);
 
 
-    // JS element
+    // // try to send console output to parent frame
+    // const oldConsoleLog = console.log.bind(console);
+    // console.log = (...params) => {
+    //   const textToDisplay = params.map(param => typeof param === 'object' ? JSON.stringify(param) : param);
+    //   parent.postMessage(textToDisplay, "*");
+    //   oldConsoleLog(...params);
+    // };
+
+
 
   </script>
 </body>

@@ -43,7 +43,7 @@
 
             <!-- CSS -->
             <div class="CSSbox codeBox">
-                <div class="header">CSS
+                <div class="header resize">CSS
                     <label class="cbWrapper">
                         <input id="cbcss" type="checkbox" checked="checked" style="display: none;">
                         <label for="cbcss" title="instant reload"></label>
@@ -54,7 +54,7 @@
 
             <!-- JS -->
             <div class="JSbox codeBox">
-                <div class="header">JS
+                <div class="header resize">JS
                     <label class="cbWrapper">
                         <input id="cbjs" type="checkbox" style="display: none;">
                         <label for="cbjs" title="instant reload"></label>
@@ -291,5 +291,15 @@
 <script src="assets/vs/loader.js"></script>
 <script src="assets/vs/editor/editor.main.nls.js"></script>
 <script src="assets/vs/editor/editor.main.js"></script>
+
+
+<script type="text/javascript">
+    // try to receive the console output from iframe as message
+    // window.addEventListener('message', e => {
+    //     const key = e.message ? 'message' : 'data';
+    //     const data = e[key];
+    //     console.log(data)
+    // }, false);
+</script>
 
 </html>
