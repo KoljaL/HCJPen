@@ -69,18 +69,6 @@
       script.textContent = `${file[2]}`;
       document.body.appendChild(script);
     }, 200);
-
-
-    // // try to send console output to parent frame
-    // const oldConsoleLog = console.log.bind(console);
-    // console.log = (...params) => {
-    //   const textToDisplay = params.map(param => typeof param === 'object' ? JSON.stringify(param) : param);
-    //   parent.postMessage(textToDisplay, "*");
-    //   oldConsoleLog(...params);
-    // };
-
-
-
   </script>
 </body>
 
