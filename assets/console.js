@@ -98,6 +98,8 @@
     position: relative;
     top: 20px;
     min-height: 150px;
+    background-color: #151515;
+
   }
   
   .as-console-row {
