@@ -65,7 +65,8 @@ main {
 }
 
 .divider {
-    width: 10px;
+    min-width: 15px;
+    max-width: 15px;
     height: calc(100vh - var(--bg-header) - var(--footer-height));
     background: var(--bg-header);
     cursor: col-resize;
