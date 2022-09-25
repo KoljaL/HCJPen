@@ -62,6 +62,10 @@ main {
     flex-grow: 1;
     display: flex;
     flex-wrap: nowrap;
+    flex-direction: row;
+}
+main.editorRight{
+    flex-direction: row-reverse;
 }
 
 .divider {
@@ -97,8 +101,11 @@ main {
     height: 1.5rem;
     background: var(--bg-subheader);
     padding-left: 1rem;
+    display: flex;
+    justify-content: space-between;
 }
-.codeBox .header.resize { 
+
+.codeBox .header.resize {
     cursor: row-resize;
 }
 
@@ -125,7 +132,7 @@ main {
 .menu {
     padding-left: 1rem;
     display: flex;
-gap: 1rem;
+    gap: 1rem;
 }
 
 .resultBox iframe {
@@ -145,6 +152,32 @@ strong {
 /* CHECKBOX */
 .cbWrapper {
     position: relative;
+    width: 90px;
+    transition: 1s all;
+    transition-delay: 1s;
+}
+
+
+.cbWrapper::after {
+        position: absolute;
+    right: 0;
+    top: 20px;
+    width: 150px;
+    padding: .5rem;
+    border: 1px solid var(--text-hover-color);
+    border-radius: 5px;
+    background: var(--bg-main);
+    content: attr(data-tooltip);
+    color: var(--text-color);
+    font-size: 10px;
+    z-index: 500;
+    opacity: 0;
+    transition: .5s all;
+}
+
+.cbWrapper:hover::after {
+    opacity: 1;
+    transition-delay: .5s;
 }
 
 .cbWrapper [type="checkbox"] {
@@ -157,12 +190,15 @@ strong {
 
 .cbWrapper [type="checkbox"]+label {
     position: absolute;
-    top: 3px;
+    top: 6px;
     left: 10px;
     cursor: pointer;
+    white-space: nowrap;
+    font-size: 10px;
+    color: var(--text-hover-color);
 }
 
-.cbWrapper [type="checkbox"]+label::before {
+.cbWrapper [type="checkbox"]+label::after {
     width: 10px;
     height: 10px;
     border-radius: 3px;
@@ -170,44 +206,45 @@ strong {
     background-color: transparent;
     display: block;
     content: "";
-    float: left;
-    margin-right: 5px;
+    float: right;
+    margin-left: 5px;
+    margin-top: 1px;
     z-index: 5;
     position: relative;
 }
 
-.cbWrapper [type="checkbox"]:checked+label::before {
+.cbWrapper [type="checkbox"]:checked+label::after {
     box-shadow: inset 0px 0px 0px 2px var(--bg-subheader);
 }
 
-.HTMLbox .cbWrapper [type="checkbox"]+label::before {
+.HTMLbox .cbWrapper [type="checkbox"]+label::after {
     border: 1px solid var(--HTML-color);
 }
 
-.HTMLbox .cbWrapper [type="checkbox"]:checked+label::before {
+.HTMLbox .cbWrapper [type="checkbox"]:checked+label::after {
     background-color: var(--HTML-color);
 }
 
-.CSSbox .cbWrapper [type="checkbox"]+label::before {
+.CSSbox .cbWrapper [type="checkbox"]+label::after {
     border: 1px solid var(--CSS-color);
 }
 
-.CSSbox .cbWrapper [type="checkbox"]:checked+label::before {
+.CSSbox .cbWrapper [type="checkbox"]:checked+label::after {
     background-color: var(--CSS-color);
 }
 
-.JSbox .cbWrapper [type="checkbox"]+label::before {
+.JSbox .cbWrapper [type="checkbox"]+label::after {
     border: 1px solid var(--JS-color);
 }
 
-.JSbox .cbWrapper [type="checkbox"]:checked+label::before {
+.JSbox .cbWrapper [type="checkbox"]:checked+label::after {
     background-color: var(--JS-color);
 }
 
 
-/* BUTTONS */ 
+/* BUTTONS */
 
- 
+
 button {
     border: 1px solid var(--text-color);
     border-radius: 5px;
@@ -222,7 +259,7 @@ button {
     flex-direction: row;
     align-items: center;
     flex-wrap: nowrap;
-  }
+}
 
 button.change {
     border: 1px solid red;
@@ -240,7 +277,7 @@ button.change {
 }
 
 
-.menu button:hover:after { 
+.menu button:hover:after {
     background-color: var(--text-color);
 }
 
@@ -262,7 +299,11 @@ button.fullpage::after {
 button.download::after {
     -webkit-mask-image: url('./icons/save.svg');
     mask-image: url('./icons/save.svg');
-} 
+}
+button.changeLayout::after {
+    -webkit-mask-image: url('./icons/flip-2.svg');
+    mask-image: url('./icons/flip-2.svg');
+}
 
 /* WITH LOVE */
 footer .withLove {

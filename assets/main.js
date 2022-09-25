@@ -13,14 +13,17 @@ const selectAll = document.querySelectorAll.bind(document)
  *
  */
 // https://dev.to/pulljosh/how-to-load-html-css-and-js-code-into-an-iframe-2blc
-var editor = {}
-var data = {}
-var html, css, js
-let filename = 'HCJPen'
-var iframe = select('.resultBox iframe')
-const runButton = select('header .run')
-const fullpageLink = select('header .fullpageLink')
-const downloadButton = select('header .download')
+var editor = {};
+var data = {};
+var html, css, js;
+let filename = 'HCJPen';
+var iframe = select('.resultBox iframe');
+const runButton = select('header .run');
+const fullpageLink = select('header .fullpageLink');
+const downloadButton = select('header .download');
+const changeLayoutButton = select('header .changeLayout');
+
+
 window.onload = function () {
   loadFileContent('default')
 }
@@ -31,11 +34,15 @@ window.onload = function () {
  *
  */
 runButton.addEventListener('click', () => {
-  createIframe(data)
-})
+  createIframe(data);
+});
 downloadButton.addEventListener('click', () => {
-  downloadAsFile(data, true)
-})
+  downloadAsFile(data, true);
+});
+
+changeLayoutButton.addEventListener('click', () => {
+  select('main').classList.toggle('editorRight');
+});
 
 /**
  *

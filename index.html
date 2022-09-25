@@ -25,9 +25,11 @@
             <a class=fullpageLink href="./iframe.html" target="_blank" rel="noopener noreferrer">
                 <button class="fullpage">Fullpage</button>
             </a>
+            <button class="changeLayout">changeLayout</button>
         </div>
 
-        <h1><span style="color: var(--HTML-color)">H</span><span style="color: var(--CSS-color)">C</span><span style="color: var(--JS-color)">J</span>-Pen</h1>
+        <!-- <h1><span style="color: var(--HTML-color)">H</span><span style="color: var(--CSS-color)">C</span><span style="color: var(--JS-color)">J</span>-Pen</h1> -->
+        <div>&nbsp;</div>
         <div>&nbsp;</div>
     </header>
     <main>
@@ -37,33 +39,36 @@
         <div class="codeBoxes">
             <!-- HTML -->
             <div class="HTMLbox codeBox">
-                <div class="header">HTML
-                    <label class="cbWrapper">
+                <div class="header">
+                    <div id="title">HTML</div>
+                    <div class="cbWrapper">
                         <input id="cbhtml" type="checkbox" checked="checked" style="display: none;">
-                        <label for="cbhtml" title="instant reload"></label>
-                    </label>
+                        <label for="cbhtml">Hot reload</label>
+                    </div>
                 </div>
                 <div class="editor"> </div>
             </div>
 
             <!-- CSS -->
             <div class="CSSbox codeBox">
-                <div class="header resize">CSS
-                    <label class="cbWrapper">
+                <div class="header resize">
+                    <div id="title">CSS</div>
+                    <div class="cbWrapper" data-tooltip="Enable to reload preview window after every keystroke">
                         <input id="cbcss" type="checkbox" checked="checked" style="display: none;">
-                        <label for="cbcss" title="instant reload"></label>
-                    </label>
+                        <label for="cbcss">Hot reload</label>
+                    </div>
                 </div>
                 <div class="editor"></div>
             </div>
 
             <!-- JS -->
             <div class="JSbox codeBox">
-                <div class="header resize">JS
-                    <label class="cbWrapper">
+                <div class="header resize">
+                    <div id="title">JS</div>
+                    <div class="cbWrapper">
                         <input id="cbjs" type="checkbox" style="display: none;">
-                        <label for="cbjs" title="instant reload"></label>
-                    </label>
+                        <label for="cbjs">Hot reload</label>
+                    </div>
                 </div>
                 <div class="editor"> </div>
             </div>
