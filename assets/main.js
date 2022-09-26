@@ -13,16 +13,19 @@ const selectAll = document.querySelectorAll.bind(document)
  *
  */
 // https://dev.to/pulljosh/how-to-load-html-css-and-js-code-into-an-iframe-2blc
-var editor = {};
-var data = {};
-var html, css, js;
-let filename = 'HCJPen';
-var iframe = select('.resultBox iframe');
-const runButton = select('header .run');
-const fullpageLink = select('header .fullpageLink');
-const downloadButton = select('header .download');
-const changeLayoutButton = select('header .changeLayout');
-
+var editor = {}
+var data = {}
+var savedPens = {}
+var html, css, js
+const prefix = 'HCJPen-'
+var filename = prefix + 'default2'
+var iframe = select('.resultBox iframe')
+const runButton = select('header .run')
+const fullpageLink = select('header .fullpageLink')
+const downloadButton = select('header .download')
+const changeLayoutButton = select('header .changeLayout')
+const loadsaveSelect = select('#loadsave')
+const loadsaveList = select('#loadsaveList')
 
 window.onload = function () {
   loadFileContent('default')
@@ -30,19 +33,120 @@ window.onload = function () {
 
 /**
  *
+ * read all items in locasStorage
+ *
+ */
+
+function readLocalStorage () {
+  for (var i = 0; i < localStorage.length; i++) {
+    var key = localStorage.key(i)
+    if (key.search(prefix) === 0) {
+      let name = key.replace(prefix, '')
+      savedPens[name] = key
+
+      // var value = localStorage.getItem(key);
+      // console.log('Key: ' + key + ', Value: ' + value);
+    }
+  }
+  console.log('savedPens', savedPens)
+}
+
+/**
+ *
+ * update dataList
+ *
+ */
+function updateDataList () {
+  for (const pen in savedPens) {
+    // console.log(pen)
+    let option = document.createElement('option')
+    option.value = pen
+    loadsaveList.appendChild(option)
+  }
+}
+
+/**
+ *
+ * load from dataList
+ *
+ */
+function loadFromDataList (item) {
+  // console.log(item)
+
+  console.log(savedPens)
+  let data = JSON.parse(localStorage.getItem(savedPens[item]))
+  // console.log(data)
+  editor.html.getModel().setValue(data[0])
+  editor.css.getModel().setValue(data[1])
+  editor.javascript.getModel().setValue(data[2])
+  // console.log(editor.html.value)
+
+  // createIframe(data)
+}
+
+/**
+ *
+ * add resize function
+ *
+ */
+document.addEventListener('DOMContentLoaded', function () {
+  readLocalStorage()
+  updateDataList()
+  resize(
+    select('.divider'),
+    select('.codeBoxes'),
+    select('.resultBox'),
+    (direction = 'horizontal')
+  )
+  resize(
+    select('.CSSbox .header'),
+    select('.HTMLbox'),
+    select('.CSSbox'),
+    (direction = 'vertical')
+  )
+  resize(
+    select('.JSbox .header'),
+    select('.CSSbox'),
+    select('.JSbox'),
+    (direction = 'vertical')
+  )
+})
+
+/**
+ *
  * eventListener
  *
  */
 runButton.addEventListener('click', () => {
-  createIframe(data);
-});
+  createIframe()
+})
 downloadButton.addEventListener('click', () => {
-  downloadAsFile(data, true);
-});
+  downloadAsFile(data, true)
+})
 
 changeLayoutButton.addEventListener('click', () => {
-  select('main').classList.toggle('editorRight');
-});
+  select('main').classList.toggle('editorRight')
+})
+
+loadsaveSelect.addEventListener('keypress', function (e) {
+  if (e.key === 'Enter') {
+    // if selected item (this.value) exist in localStorage
+    if (savedPens[this.value]) {
+      loadFromDataList(this.value)
+    }else{
+      saveToLocalStorage(this.value)
+    }
+  }
+})
+
+
+
+function saveToLocalStorage(inputText){
+  // console.log(filename)
+  filename = prefix+inputText
+  createIframe()
+
+}
 
 /**
  *
@@ -76,21 +180,21 @@ function reloadIframeOnChange () {
   editor['html'].getModel().onDidChangeContent(event => {
     runButton.classList.add('change')
     if (select('#cbhtml').checked) {
-      createIframe(data)
+      createIframe()
     }
   })
 
   editor['css'].getModel().onDidChangeContent(event => {
     runButton.classList.add('change')
     if (select('#cbcss').checked) {
-      createIframe(data)
+      createIframe()
     }
   })
 
   editor['javascript'].getModel().onDidChangeContent(event => {
     runButton.classList.add('change')
     if (select('#cbjs').checked) {
-      createIframe(data)
+      createIframe()
     }
   })
 }
@@ -100,7 +204,7 @@ function reloadIframeOnChange () {
  * create iframe and load all content to it
  *
  */
-function createIframe (data) {
+function createIframe () {
   // get values (content) from editors
   data[0] = editor['html'].getValue()
   data[1] = editor['css'].getValue()
@@ -187,39 +291,6 @@ function loadEditor (element, fileContent, lang) {
     theme: 'OneDark'
   })
 }
-
-// read all items in locasStorage
-// for (var i = 0; i < localStorage.length; i++) {
-//     var key = localStorage.key(i);
-//     var value = localStorage.getItem(key);
-//     // console.log('Key: ' + key + ', Value: ' + value);
-// }
-
-/**
- *
- * add resize function
- *
- */
-document.addEventListener('DOMContentLoaded', function () {
-  resize(
-    select('.divider'),
-    select('.codeBoxes'),
-    select('.resultBox'),
-    (direction = 'horizontal')
-  )
-  resize(
-    select('.CSSbox .header'),
-    select('.HTMLbox'),
-    select('.CSSbox'),
-    (direction = 'vertical')
-  )
-  resize(
-    select('.JSbox .header'),
-    select('.CSSbox'),
-    select('.JSbox'),
-    (direction = 'vertical')
-  )
-})
 
 /**
  *

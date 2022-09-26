@@ -38,7 +38,9 @@ body {
     font-weight: 400;
 }
 
-
+a, a:hover{
+    text-decoration: none;
+}
 
 header {
     flex-shrink: 0;
@@ -242,16 +244,18 @@ strong {
 }
 
 
-/* BUTTONS */
+/* BUTTONS & LABEL IN MENU*/
 
-
+.menu label,
 button {
+    height:33px;
     border: 1px solid var(--text-color);
     border-radius: 5px;
     background: transparent;
     color: var(--text-color);
     padding: .25rem .5rem;
     cursor: pointer;
+    font-size: 13px;
 }
 
 .menu button {
@@ -304,6 +308,22 @@ button.changeLayout::after {
     -webkit-mask-image: url('./icons/flip-2.svg');
     mask-image: url('./icons/flip-2.svg');
 }
+
+.menu input{
+    border: 1px solid var(--text-hover-color);
+    border-radius: 3px;
+    background: transparent;
+    color: var(--text-color);
+    padding: .2rem .5rem;
+}
+.menu input:focus{
+    outline: none;
+}
+
+.menu input:focus option{
+   display: block;
+}
+
 
 /* WITH LOVE */
 footer .withLove {
